@@ -49,3 +49,9 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Git,Java,Maven
+
+# Auto-generated
+
+test-output/
+.classpath
+.project
