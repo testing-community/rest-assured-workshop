@@ -5,7 +5,7 @@ import org.testng.AssertJUnit;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
-public class TestsExamples {
+public class TestsExample {
 	
 	@Test
 	public void test_one() {

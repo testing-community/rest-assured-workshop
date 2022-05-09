@@ -3,11 +3,11 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.restassured.test.TestsExamples">
+      <class name="com.restassured.test.PutPatchDeleteExmple">
         <methods>
-          <include name="test_one"/>
+          <include name="testPut"/>
         </methods>
-      </class> <!-- com.restassured.test.TestsExamples -->
+      </class> <!-- com.restassured.test.PutPatchDeleteExmple -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
