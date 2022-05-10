@@ -55,3 +55,4 @@ buildNumber.properties
 test-output/
 .classpath
 .project
+.settings
