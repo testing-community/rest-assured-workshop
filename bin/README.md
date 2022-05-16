@@ -100,44 +100,17 @@ delete this when your item is done -->
 
 First example ( https://www.youtube.com/watch?v=vgMyJhrMV0o&list=PLhW3qG5bs-L8xPrBwDv66cTMlFNeUPdJx&index=4)
 1. Create Packages 
-	test: com.restassured.test
-	
-1. Create a Java Class - "TestsExample" on the Packages test: com.restassured.test
-1. Create a function and anotation with @Test (TestNG)
-1. Run GET request
-1. Store response and print response data
-1. Add assertion
-1. Rund and veryfy
+	a. test: com.restassured.test
+	b. 
+2. Create a Java Class - "TestsExample"
+2. Create a function and anotation with @Test (TestNG)
+3. Run GET request
+4. Store response and print response data
+5. Add assertion
+6. Rund and veryfy
 
 Get and Post petititios 
-1. Create a Java Class - "GetAndPostExample.java" on the Packages test: com.restassured.test
+1. Create a Java Class - "GetAndPostExample.java"
 
 PUT, PATCH and DELETE petitions
-1. Create a Java Class - "PutPatchDeleteExmple.java" on the Packages test: com.restassured.test
-
-How to Handle Authentication in RestAssured
-1. Create a Java Class - "RestAssureAuth.java" on the Packages test: com.restassured.test and create request for authentication
-
-IN THIS EXERSICE USE:
-
-Authentication Methods
-GET
-Basic Auth
-https://postman-echo.com/basic-auth
-This endpoint simulates a basic-auth protected endpoint.
-The endpoint accepts a default username and password and returns a status code of 200 ok only if the same is provided.
-Otherwise it will return a status code 401 unauthorized.
-
-Username: postman
-Password: password
-
-To use this endpoint, send a request with the header Authorization: Basic cG9zdG1hbjpwYXNzd29yZA==.
-The cryptic latter half of the header value is a base64 encoded concatenation of the default username and password.
-Using Postman, to send this request, you can simply fill in the username and password in the "Authorization" tab and Postman will do the rest for you.
-
-To know more about basic authentication, refer to the Basic Access Authentication wikipedia article.
-The article on authentication helpers elaborates how to use the same within the Postman app.
-
-More information: https://www.postman.com/postman/workspace/published-postman-templates/documentation/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65?ctx=documentation#42c867ca-e72b-3307-169b-26a478b00641
-
-1. Complete the petition with the class BaseClassAuth.java with the parameters
+1. Create a Java Class - "PutPatchDeleteExmple.java"
