@@ -102,12 +102,12 @@ First example ( https://www.youtube.com/watch?v=vgMyJhrMV0o&list=PLhW3qG5bs-L8xP
 1. Create Packages 
 	test: com.restassured.test
 	
-2. Create a Java Class - "TestsExample" on the Packages test: com.restassured.test
-2. Create a function and anotation with @Test (TestNG)
-3. Run GET request
-4. Store response and print response data
-5. Add assertion
-6. Rund and veryfy
+1. Create a Java Class - "TestsExample" on the Packages test: com.restassured.test
+1. Create a function and anotation with @Test (TestNG)
+1. Run GET request
+1. Store response and print response data
+1. Add assertion
+1. Rund and veryfy
 
 Get and Post petititios 
 1. Create a Java Class - "GetAndPostExample.java" on the Packages test: com.restassured.test
