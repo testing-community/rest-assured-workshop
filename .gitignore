@@ -53,3 +53,5 @@ buildNumber.properties
 # Auto-generated
 
 test-output/
+.idea/
+.vscode/

@@ -18,11 +18,11 @@ public class GetAndPostExample {
 		
 		baseURI =  "https://reqres.in/api";
 		
-		given().
+		when().
 			get("/users?page=2").
 		then().
 			statusCode(200).
-			body("data[4].first_name", equalTo("George")).
+			body("data.size()", is(6)).
 			body("data.first_name", hasItems("George", "Rachel"));
 				
 	}
@@ -30,19 +30,10 @@ public class GetAndPostExample {
 	@Test
 	public void testPost() {
 		
-//      Map<String, Object> map = new HashMap<String, Object>();
-		
-//		map.put("name", "Raghav");
-//		map.put("job", "Teacher");
-//		
-//		System.out.println(map);
-		
 		JSONObject request = new JSONObject();
 		
 		request.put("name", "Raghav");
 		request.put("job", "Teacher");
-		
-		System.out.println(request.toJSONString());
 		
 		baseURI =  "https://reqres.in/api";
 		
