@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 import io.restassured.http.ContentType;
 
-public class PutPatchDeleteExmple {
+public class PutPatchDeleteExample {
 	
 	@Test
 	public void testPut() {
@@ -16,8 +16,6 @@ public class PutPatchDeleteExmple {
 		
 		request.put("name", "Raghav");
 		request.put("job", "Teacher");
-		
-		System.out.println(request.toJSONString());
 		
 		baseURI =  "https://reqres.in/api";
 		
@@ -40,8 +38,6 @@ public class PutPatchDeleteExmple {
 		
 		request.put("name", "Raghav");
 		request.put("job", "Teacher");
-		
-		System.out.println(request.toJSONString());
 		
 		baseURI =  "https://reqres.in";
 		
