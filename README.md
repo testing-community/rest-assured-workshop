@@ -359,4 +359,54 @@ Empecemos
 	}
     ```
     
- 1. Ahora verifiquemos que el metodo de autenticacion quedo correcto. Desde la clase RestAssuredAuth.java ejecuta la prueba, verifica que el codigo de respuesta es 200.
+ 1. Ahora verifiquemos que el metodo de autenticacion quedo correcto. Desde la clase RestAssuredAuth.java ejecuta la prueba, verifica que el codigo de respuesta que se imprime en consola es 200.
+ 
+ 
+ ### 4. Assertions con Hamcrest
+ 
+ Vamos a realizar la verificación de una de nuestras pruebas. Para esto usaremos Hamcrest. Lo primero que debemos hacer es agregar la librería que nos permite hacer las aserciones.
+ 
+ 1. En el archivo pom.xml agrega la dependencia de Hamcrest All que se encuentra en el repositorio de mavem.
+ 
+	 Copie y pegue:
+	    ```xml
+	    <dependency>
+		    <groupId>org.hamcrest</groupId>
+		    <artifactId>hamcrest-all</artifactId>
+		    <version>1.3</version>
+		    <scope>test</scope>
+		</dependency>
+	    ```
+	    
+ 1. Para que los cambios sean tomados actualice las librerías. Desde Eclipse puede hacer clic derecho desde el proyecto, seleccione la opción Maven y luego Update Project. Verifique que este seleccionado el proyecto sobre el cual esta trabajando y luego ejecute OK.
+ 
+ 1. Ahora, importe los metodos de Hamcrest agregando la siguiente linea: 
+ 
+ 	Copie y pegue:
+	    ```java
+	    import static org.hamcrest.Matchers.*;
+	    ```
+	    
+ 1. Ahora actialice el metodo "test1" de la clase RestAssuredAuth.java para que quede de la siguiente forma.
+
+
+	Copie y pegue:
+	  ```java
+	  public void test1() {
+		
+		RestAssured.given()
+			.get()
+			.then()
+			.statusCode(200)
+			.body("authenticated", equalTo(true));
+		
+	  }
+	  ```
+	  
+Note que se agregó. then() indicando que siguen las aserciones y posteriormente los matchers statusCode para validar que se entregue un Código de respuesta valida y el marcher body para verificar que sea el esperado.
+
+ 1. Ahora ejecutemos la prueba. Desde la clase RestAssuredAuth.java ejecuta la prueba, verifica que el test quedo OK.
+ 
+ 1. Has fallar tu asercion, en el statusCode(200), cambialo por 300 y ejecuta nuevamente. Veras que ahora la prueba quedo fallida. 
+  
+ 
