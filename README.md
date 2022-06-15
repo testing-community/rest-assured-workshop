@@ -369,14 +369,14 @@ Empecemos
  1. En el archivo pom.xml agrega la dependencia de Hamcrest All que se encuentra en el repositorio de mavem.
  
 	 Copie y pegue:
-	    ```xml
-	    <dependency>
-		    <groupId>org.hamcrest</groupId>
-		    <artifactId>hamcrest-all</artifactId>
-		    <version>1.3</version>
-		    <scope>test</scope>
-		</dependency>
-	    ```
+	 ```java
+	 <dependency>
+	   <groupId>org.hamcrest</groupId>
+	   <artifactId>hamcrest-all</artifactId>
+	     <version>1.3</version>
+	     <scope>test</scope>
+	 </dependency>
+	 ```
 	    
  1. Para que los cambios sean tomados actualice las librerías. Desde Eclipse puede hacer clic derecho desde el proyecto, seleccione la opción Maven y luego Update Project. Verifique que este seleccionado el proyecto sobre el cual esta trabajando y luego ejecute OK.
  
