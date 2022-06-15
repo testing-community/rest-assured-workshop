@@ -1,0 +1,1 @@
+{"uuid":"806a8baa-98ee-4278-a1ed-eeb4014a4cdc","name":"com.restassured.test.RestAssureAuth","children":["ed8a7b13-0983-499d-8d50-b09ad8db9342"],"befores":[{"name":"setup","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1655331226611,"stop":1655331227136}],"afters":[],"start":1655331226574,"stop":1655331229608}

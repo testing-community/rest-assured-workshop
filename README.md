@@ -403,10 +403,109 @@ Empecemos
 	  }
 	  ```
 	  
-Note que se agregó. then() indicando que siguen las aserciones y posteriormente los matchers statusCode para validar que se entregue un Código de respuesta valida y el marcher body para verificar que sea el esperado.
+	Note que se agregó. then() indicando que siguen las aserciones y posteriormente los matchers statusCode para validar que se entregue un Código de respuesta valida y el marcher body para verificar que sea el esperado.
 
  1. Ahora ejecutemos la prueba. Desde la clase RestAssuredAuth.java ejecuta la prueba, verifica que el test quedo OK.
  
- 1. Has fallar tu asercion, en el statusCode(200), cambialo por 300 y ejecuta nuevamente. Veras que ahora la prueba quedo fallida. 
+ 1. Has fallar tu asercion, en el statusCode(200), cambialo por 300 y ejecuta nuevamente. Veras que ahora la prueba quedo fallida.
+ 
+ Puedes ver más Matchers [Aquí]( https://www.javadoc.io/doc/org.hamcrest/hamcrest/2.1/org/hamcrest/Matchers.html).
+ 
+ 
+  ### 5. Configuremos nuestro reporte con Allure
   
+ 1. En el archivo pom.xml agrega la dependencia de Allure que se encuentra en el repositorio de mavem.
+ 
+	 Copie y pegue:
+	    ```xml
+	    <dependency>
+			<groupId>io.qameta.allure</groupId>
+			<artifactId>allure-testng</artifactId>
+			<version>2.18.1</version>
+			<scope>test</scope>
+		</dependency>
+	    ```
+ 1. En el archivo pom.xml agregue en la seccion properties la siguiente linea
+ 
+	 Copie y pegue:
+	    ```xml
+	    <aspectj.version>1.8.10</aspectj.version>
+	    ```
+	    
+ 1. En el archivo pom.xml agrega los siguientes plogins que le permitiran generar el reporte. Recuerde que en 
+ 
+	 Copie y pegue:
+	    ```xml
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.20</version>
+					<configuration>
+						<argLine>
+							-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+						</argLine>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.aspectj</groupId>
+							<artifactId>aspectjweaver</artifactId>
+							<version>${aspectj.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>io.qameta.allure</groupId>
+					<artifactId>allure-maven</artifactId>
+					<version>2.8</version>
+					<configuration>
+						<reportVersion>2.7.0</reportVersion>
+						<allureDownloadUrl>https://github.com/allure-framework/allure2/releases/download/2.7.0/allure-2.7.0.zip</allureDownloadUrl>
+						<resultsDirectory> ${basedir}\allure-results</resultsDirectory>
+					</configuration>
+				</plugin>
+	    ```
+ 1. Para que los cambios sean tomados actualice las librerías. Desde Eclipse puede hacer clic derecho desde el proyecto, seleccione la opción Maven y luego Update Project. Verifique que este seleccionado el proyecto sobre el cual esta trabajando y luego ejecute OK.
+ 
+ 1. Ahora actialice el metodo "test1" de la clase RestAssuredAuth.java para que quede de la siguiente forma.
+ 
+ 	Copie y pegue:
+	    ```java
+	    @Test(priority = 0, description="Valid Autentication Scenario with valid username and password.")
+		@Severity(SeverityLevel.BLOCKER)
+		@Description("Test Description: Login test with valid username and password.")
+		@Story("Get autentication token")
+		@Step("Petition get to autentication")
+		public void test1() {
+			
+			RestAssured.given()
+				.get()
+				.then()
+				.statusCode(200)
+				.body("authenticated", equalTo(true));
+			
+		}
+	    ```
+ 	
+ 	Note que agregamos anotaciones que seran caracteristicas de nuestro reporte en Allure.
+ 
+ 1. Finalmente, abra una consola de comandos desde dentro de su carpeta del proyecto "rest-assured-workshop" y ejecute los siguientes comandos:  
+ 		
+ 		```
+ 		mvn clean test
+ 		
+ 		mvn allure:serve
+ 		
+ 		```
+ 	
+ 	Esto le abrira el reporte en el navegador, navegue el reporte y encuentre donde se encuentran las anotaciones puestas en la clase de prueba.
+ 	
+ 	Lea mas acerca de Allure [Aquí](https://docs.qameta.io/allure/#_testng).
  
