@@ -137,7 +137,7 @@ Se asume que la persona tiene conocimientos previos en:
 1. Crear carpeta de pruebas (de ahora en adelante `test`)
     * En la ruta `src/test/java/com/restassured` crear carpeta con de nombre `test`
 
-**Los siguientes 2 pasos son opcionales en caso de querer revisión de este workshop para cada punto**
+1. Configura tu Git para revision del workshop para cada punto
 
 1. Proteger la rama `main` para que los pull request requieran revisión de otros desarrolladores y se compruebe el estado de nuestros test ("ok" :heavy_check_mark: o "fallaron" :x:) antes de hacer un merge a la rama.
 
@@ -295,29 +295,68 @@ Se asume que la persona tiene conocimientos previos en:
     En este caso no es necesario definir precondiciones o preparar lo que enviaremos (Given), debido a que el método DELETE de este endpoint solo se le especifica en la url (eliminar el usuario con id 2). Finalmente validamos el status code e imprimimos la respuesta de la petición.
 
 
-<!--How to Handle Authentication in RestAssured
-1. Create a Java Class - "RestAssuredAuth.java" on the Packages test: com.restassured.test and create request for authentication
+### 3. Authentication en RestAssured
 
-IN THIS EXERSICE USE:
+Muchos servicios requieren de autenticación para consumir sus métodos, en este ejercicio vamos a construir un ejemplo de autenticación básica (Basic Auth).
 
-Authentication Methods
-GET
-Basic Auth
-https://postman-echo.com/basic-auth
-This endpoint simulates a basic-auth protected endpoint.
-The endpoint accepts a default username and password and returns a status code of 200 ok only if the same is provided.
-Otherwise it will return a status code 401 unauthorized.
+
+Para esto utilizaremos el recurso [basic-auth de postman]( https://postman-echo.com/basic-auth). El endpoint acepta un nombre de usuario y una contraseña predeterminados y devuelve un código de estado de 200 ok, solo si se proporciona el mismo correctamente. De lo contrario, devolverá un código de estado 401 no autorizado.
+
+La información de autenticacion del servicio es:
 
 Username: postman
 Password: password
 
-To use this endpoint, send a request with the header Authorization: Basic cG9zdG1hbjpwYXNzd29yZA==.
-The cryptic latter half of the header value is a base64 encoded concatenation of the default username and password.
-Using Postman, to send this request, you can simply fill in the username and password in the "Authorization" tab and Postman will do the rest for you.
+Empecemos
 
-To know more about basic authentication, refer to the Basic Access Authentication wikipedia article.
-The article on authentication helpers elaborates how to use the same within the Postman app.
+1. Crea una clase Java llamada "BaseClassAuth.java" en el Packages test: com.restassured.test y cree una peticion para autenticacion con el siguiente codigo, la cual contiene los parametros de petición y autenticación:
 
-More information: https://www.postman.com/postman/workspace/published-postman-templates/documentation/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65?ctx=documentation#42c867ca-e72b-3307-169b-26a478b00641
+	Copie y pegue:
+    ```java
+	package com.restassured.test;
+	
+	import org.testng.annotations.BeforeClass;
+	
+	import io.restassured.RestAssured;
+	
+	public class BaseClassAuth {
+		
+		@BeforeClass
+		public void setup() {
+			
+			RestAssured.authentication = RestAssured.preemptive().basic("postman", "password");
+			
+			RestAssured.baseURI = "https://postman-echo.com/basic-auth";
+			
+		}
+	
+	}
+    ```
 
-1. Complete the petition with the class BaseClassAuth.java with the parameters
+1. Ahora crea la clase Java llamada "RestAssuredAuth.java" en el Packages test: com.restassured.test que se extiende de la clase BaseClassAuth y que hace la peticion para la autenticacion.
+
+	Copie y pegue:
+    ```java
+    package com.restassured.test;
+
+	import org.testng.annotations.Test;
+	
+	import io.restassured.RestAssured;
+	
+	public class RestAssureAuth extends BaseClassAuth{
+		
+		@Test
+		public void test1() {
+			
+			int code = RestAssured.given().
+					get().
+					getStatusCode();
+			
+			System.out.println("Response code form server is " + code);
+			
+		}
+	
+	}
+    ```
+    
+ 1. Ahora verifiquemos que el metodo de autenticacion quedo correcto. Desde la clase RestAssuredAuth.java ejecuta la prueba, verifica que el codigo de respuesta es 200.
