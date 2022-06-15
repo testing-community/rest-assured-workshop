@@ -373,8 +373,8 @@ Empecemos
 	 <dependency>
 	   <groupId>org.hamcrest</groupId>
 	   <artifactId>hamcrest-all</artifactId>
-	     <version>1.3</version>
-	     <scope>test</scope>
+	   <version>1.3</version>
+	   <scope>test</scope>
 	 </dependency>
 	 ```
 	    
@@ -383,25 +383,25 @@ Empecemos
  1. Ahora, importe los metodos de Hamcrest agregando la siguiente linea: 
  
  	Copie y pegue:
-	    ```java
-	    import static org.hamcrest.Matchers.*;
-	    ```
+	```java
+	import static org.hamcrest.Matchers.*;
+	```
 	    
  1. Ahora actialice el metodo "test1" de la clase RestAssuredAuth.java para que quede de la siguiente forma.
 
 
 	Copie y pegue:
-	  ```java
-	  public void test1() {
+	```java
+	public void test1() {
 		
-		RestAssured.given()
-			.get()
-			.then()
-			.statusCode(200)
-			.body("authenticated", equalTo(true));
+	RestAssured.given()
+		.get()
+		.then()
+		.statusCode(200)
+		.body("authenticated", equalTo(true));
 		
-	  }
-	  ```
+	}
+	```
 	  
 	Note que se agregó. then() indicando que siguen las aserciones y posteriormente los matchers statusCode para validar que se entregue un Código de respuesta valida y el marcher body para verificar que sea el esperado.
 
@@ -417,82 +417,84 @@ Empecemos
  1. En el archivo pom.xml agrega la dependencia de Allure que se encuentra en el repositorio de mavem.
  
 	 Copie y pegue:
-	    ```xml
-	    <dependency>
-			<groupId>io.qameta.allure</groupId>
-			<artifactId>allure-testng</artifactId>
-			<version>2.18.1</version>
-			<scope>test</scope>
-		</dependency>
-	    ```
+	 ```java
+	 <dependency>
+		<groupId>io.qameta.allure</groupId>
+		<artifactId>allure-testng</artifactId>
+		<version>2.18.1</version>
+		<scope>test</scope>
+	</dependency>
+	```
+	
  1. En el archivo pom.xml agregue en la seccion properties la siguiente linea
  
 	 Copie y pegue:
-	    ```xml
-	    <aspectj.version>1.8.10</aspectj.version>
-	    ```
+	 ```java
+	 <aspectj.version>1.8.10</aspectj.version>
+	 ```
 	    
  1. En el archivo pom.xml agrega los siguientes plogins que le permitiran generar el reporte. Recuerde que en 
  
 	 Copie y pegue:
-	    ```xml
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.20</version>
-					<configuration>
-						<argLine>
-							-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-						</argLine>
-					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>org.aspectj</groupId>
-							<artifactId>aspectjweaver</artifactId>
-							<version>${aspectj.version}</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-				<plugin>
-					<groupId>io.qameta.allure</groupId>
-					<artifactId>allure-maven</artifactId>
-					<version>2.8</version>
-					<configuration>
-						<reportVersion>2.7.0</reportVersion>
-						<allureDownloadUrl>https://github.com/allure-framework/allure2/releases/download/2.7.0/allure-2.7.0.zip</allureDownloadUrl>
-						<resultsDirectory> ${basedir}\allure-results</resultsDirectory>
-					</configuration>
-				</plugin>
-	    ```
+	 ```java
+	 <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<configuration>
+			<source>1.8</source>
+			<target>1.8</target>
+		</configuration>
+	 </plugin>
+	 <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<version>2.20</version>
+		<configuration>
+			<argLine>
+				-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+			</argLine>
+		</configuration>
+		<dependencies>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjweaver</artifactId>
+				<version>${aspectj.version}</version>
+			</dependency>
+		</dependencies>
+		</plugin>
+		<plugin>
+			<groupId>io.qameta.allure</groupId>
+			<artifactId>allure-maven</artifactId>
+			<version>2.8</version>
+			<configuration>
+				<reportVersion>2.7.0</reportVersion>
+				<allureDownloadUrl>https://github.com/allure-framework/allure2/releases/download/2.7.0/allure-2.7.0.zip</allureDownloadUrl>
+				<resultsDirectory> ${basedir}\allure-results</resultsDirectory>
+			</configuration>
+		</plugin>
+	 ```
+	 
  1. Para que los cambios sean tomados actualice las librerías. Desde Eclipse puede hacer clic derecho desde el proyecto, seleccione la opción Maven y luego Update Project. Verifique que este seleccionado el proyecto sobre el cual esta trabajando y luego ejecute OK.
  
  1. Ahora actialice el metodo "test1" de la clase RestAssuredAuth.java para que quede de la siguiente forma.
  
  	Copie y pegue:
-	    ```java
-	    @Test(priority = 0, description="Valid Autentication Scenario with valid username and password.")
-		@Severity(SeverityLevel.BLOCKER)
-		@Description("Test Description: Login test with valid username and password.")
-		@Story("Get autentication token")
-		@Step("Petition get to autentication")
-		public void test1() {
+	```java
+	@Test(priority = 0, description="Valid Autentication Scenario with valid username and password.")
+	@Severity(SeverityLevel.BLOCKER)
+	@Description("Test Description: Login test with valid username and password.")
+	@Story("Get autentication token")
+	@Step("Petition get to autentication")
+	public void test1() {
 			
-			RestAssured.given()
-				.get()
-				.then()
-				.statusCode(200)
-				.body("authenticated", equalTo(true));
+		RestAssured.given()
+			.get()
+			.then()
+			.statusCode(200)
+			.body("authenticated", equalTo(true));
 			
-		}
-	    ```
+	}
+	```
  	
  	Note que agregamos anotaciones que seran caracteristicas de nuestro reporte en Allure.
  
