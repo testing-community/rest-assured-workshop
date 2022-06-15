@@ -507,7 +507,9 @@ Empecemos
  		
  		```
  	
- 	Esto le abrira el reporte en el navegador, navegue el reporte y encuentre donde se encuentran las anotaciones puestas en la clase de prueba.
+ 	Esto le abrira el reporte en el navegador, navegue el reporte y encuentre donde se encuentran las anotaciones puestas en la clase de prueba. vera algo como lo siguiente:
+ 	![branch rules](https://docs.qameta.io/allure/images/testcase.png)
+ 	
  	
  	Lea mas acerca de Allure [Aquí](https://docs.qameta.io/allure/#_testng).
  
