@@ -137,7 +137,7 @@ Se asume que la persona tiene conocimientos previos en:
 1. Crear carpeta de pruebas (de ahora en adelante `test`)
     * En la ruta `src/test/java/com/restassured` crear carpeta con de nombre `test`
 
-**Los siguientes 2 pasos son opcionales en caso de querer revisión de este workshop para cada punto**
+1. Configura tu Git para revision del workshop para cada punto
 
 1. Proteger la rama `main` para que los pull request requieran revisión de otros desarrolladores y se compruebe el estado de nuestros test ("ok" :heavy_check_mark: o "fallaron" :x:) antes de hacer un merge a la rama.
 
@@ -295,29 +295,221 @@ Se asume que la persona tiene conocimientos previos en:
     En este caso no es necesario definir precondiciones o preparar lo que enviaremos (Given), debido a que el método DELETE de este endpoint solo se le especifica en la url (eliminar el usuario con id 2). Finalmente validamos el status code e imprimimos la respuesta de la petición.
 
 
-<!--How to Handle Authentication in RestAssured
-1. Create a Java Class - "RestAssuredAuth.java" on the Packages test: com.restassured.test and create request for authentication
+### 3. Authentication en RestAssured
 
-IN THIS EXERSICE USE:
+Muchos servicios requieren de autenticación para consumir sus métodos, en este ejercicio vamos a construir un ejemplo de autenticación básica (Basic Auth).
 
-Authentication Methods
-GET
-Basic Auth
-https://postman-echo.com/basic-auth
-This endpoint simulates a basic-auth protected endpoint.
-The endpoint accepts a default username and password and returns a status code of 200 ok only if the same is provided.
-Otherwise it will return a status code 401 unauthorized.
+
+Para esto utilizaremos el recurso [basic-auth de postman]( https://postman-echo.com/basic-auth). El endpoint acepta un nombre de usuario y una contraseña predeterminados y devuelve un código de estado de 200 ok, solo si se proporciona el mismo correctamente. De lo contrario, devolverá un código de estado 401 no autorizado.
+
+La información de autenticacion del servicio es:
 
 Username: postman
 Password: password
 
-To use this endpoint, send a request with the header Authorization: Basic cG9zdG1hbjpwYXNzd29yZA==.
-The cryptic latter half of the header value is a base64 encoded concatenation of the default username and password.
-Using Postman, to send this request, you can simply fill in the username and password in the "Authorization" tab and Postman will do the rest for you.
+Empecemos
 
-To know more about basic authentication, refer to the Basic Access Authentication wikipedia article.
-The article on authentication helpers elaborates how to use the same within the Postman app.
+1. Crea una clase Java llamada `BaseClassAuth.java` en el Packages `test`: com.restassured.test y cree una peticion para autenticacion con el siguiente código, la cual contiene los parametros de la petición y autenticación:
 
-More information: https://www.postman.com/postman/workspace/published-postman-templates/documentation/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65?ctx=documentation#42c867ca-e72b-3307-169b-26a478b00641
+	Copie y pegue:
+    ```java
+	package com.restassured.test;
+	
+	import org.testng.annotations.BeforeClass;
+	
+	import io.restassured.RestAssured;
+	
+	public class BaseClassAuth {
+		
+		@BeforeClass
+		public void setup() {
+			
+			RestAssured.authentication = RestAssured.preemptive().basic("postman", "password");
+			
+			RestAssured.baseURI = "https://postman-echo.com/basic-auth";
+			
+		}
+	
+	}
+    ```
 
-1. Complete the petition with the class BaseClassAuth.java with the parameters
+1. Ahora crea la clase Java llamada `RestAssuredAuth.java` en el Packages `test`: com.restassured.test que se extiende de la clase `BaseClassAuth.java` y que hace la petición para la autenticación.
+
+	Copie y pegue:
+    ```java
+    package com.restassured.test;
+
+	import org.testng.annotations.Test;
+	
+	import io.restassured.RestAssured;
+	
+	public class RestAssureAuth extends BaseClassAuth{
+		
+		@Test
+		public void test1() {
+			
+			int code = RestAssured.given().
+					get().
+					getStatusCode();
+			
+			System.out.println("Response code form server is " + code);
+			
+		}
+	
+	}
+    ```
+    
+ 1. Ahora verifiquemos que el método de autenticación quedo correcto. Desde la clase `RestAssuredAuth.java` ejecute la prueba y verifique que el código de respuesta que se imprime en consola es 200.
+ 
+ 
+ ### 4. Assertions con Hamcrest
+ 
+ Vamos a realizar la verificación de una de nuestras pruebas. Para esto usaremos Hamcrest. Lo primero que debemos hacer es agregar la librería que nos permite hacer las aserciones.
+ 
+ 1. En el archivo pom.xml agrega la dependencia de Hamcrest All que se encuentra en el repositorio de mavem.
+ 
+	 Copie y pegue:
+	 ```java
+	 <dependency>
+	   <groupId>org.hamcrest</groupId>
+	   <artifactId>hamcrest-all</artifactId>
+	   <version>1.3</version>
+	   <scope>test</scope>
+	 </dependency>
+	 ```
+	    
+ 1. Para que los cambios sean tomados actualice las librerías. Desde Eclipse puede hacer clic derecho desde el proyecto, seleccione la opción Maven y luego Update Project. Verifique que este seleccionado el proyecto sobre el cual esta trabajando y luego ejecute OK.
+ 
+ 1. Ahora, importe los metodos de Hamcrest agregando la siguiente linea: 
+ 
+ 	Copie y pegue:
+	```java
+	import static org.hamcrest.Matchers.*;
+	```
+	    
+ 1. Ahora actialice el metodo "test1" de la clase RestAssuredAuth.java para que quede de la siguiente forma.
+
+
+	Copie y pegue:
+	```java
+	public void test1() {
+		
+	RestAssured.given()
+		.get()
+		.then()
+		.statusCode(200)
+		.body("authenticated", equalTo(true));
+		
+	}
+	```
+	  
+	Note que se agregó. then() indicando que siguen las aserciones y posteriormente los matchers statusCode para validar que se entregue un Código de respuesta valida y el marcher body para verificar que sea el esperado.
+
+ 1. Ahora ejecutemos la prueba. Desde la clase RestAssuredAuth.java ejecuta la prueba, verifica que el test quedo OK.
+ 
+ 1. Has fallar tu asercion, en el statusCode(200), cambialo por 300 y ejecuta nuevamente. Veras que ahora la prueba quedo fallida.
+ 
+ Puedes ver más Matchers [Aquí]( https://www.javadoc.io/doc/org.hamcrest/hamcrest/2.1/org/hamcrest/Matchers.html).
+ 
+ 
+  ### 5. Configuremos nuestro reporte con Allure
+  
+ 1. En el archivo pom.xml agrega la dependencia de Allure que se encuentra en el repositorio de mavem.
+ 
+	 Copie y pegue:
+	 ```java
+	 <dependency>
+		<groupId>io.qameta.allure</groupId>
+		<artifactId>allure-testng</artifactId>
+		<version>2.18.1</version>
+		<scope>test</scope>
+	</dependency>
+	```
+	
+ 1. En el archivo pom.xml agregue en la seccion properties la siguiente linea
+ 
+	 Copie y pegue:
+	 ```java
+	 <aspectj.version>1.8.10</aspectj.version>
+	 ```
+	    
+ 1. En el archivo pom.xml agrega los siguientes plugins que le permitiran generar el reporte. Recuerde que en 
+ 
+	 Copie y pegue:
+	 ```java
+	 <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<configuration>
+			<source>1.8</source>
+			<target>1.8</target>
+		</configuration>
+	 </plugin>
+	 <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<version>2.20</version>
+		<configuration>
+			<argLine>
+				-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+			</argLine>
+		</configuration>
+		<dependencies>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjweaver</artifactId>
+				<version>${aspectj.version}</version>
+			</dependency>
+		</dependencies>
+		</plugin>
+		<plugin>
+			<groupId>io.qameta.allure</groupId>
+			<artifactId>allure-maven</artifactId>
+			<version>2.8</version>
+			<configuration>
+				<reportVersion>2.7.0</reportVersion>
+				<allureDownloadUrl>https://github.com/allure-framework/allure2/releases/download/2.7.0/allure-2.7.0.zip</allureDownloadUrl>
+				<resultsDirectory> ${basedir}\allure-results</resultsDirectory>
+			</configuration>
+		</plugin>
+	 ```
+	 
+ 1. Para que los cambios sean tomados actualice las librerías. Desde Eclipse puede hacer clic derecho desde el proyecto, seleccione la opción Maven y luego Update Project. Verifique que este seleccionado el proyecto sobre el cual esta trabajando y luego ejecute OK.
+ 
+ 1. Ahora actialice el método `test1` de la clase `RestAssuredAuth.java` para que quede de la siguiente forma.
+ 
+ 	Copie y pegue:
+	```java
+	@Test(priority = 0, description="Valid Autentication Scenario with valid username and password.")
+	@Severity(SeverityLevel.BLOCKER)
+	@Description("Test Description: Login test with valid username and password.")
+	@Story("Get autentication token")
+	@Step("Petition get to autentication")
+	public void test1() {
+			
+		RestAssured.given()
+			.get()
+			.then()
+			.statusCode(200)
+			.body("authenticated", equalTo(true));
+			
+	}
+	```
+ 	
+ 	__Nota:__ Estas anotaciones son necesarias, ya que serán características de nuestro reporte en Allure y nos permitirá tener detalles de la prueba en el reporte. Existen otros tipos de anotaciones que le ayudaran a mejorar su reporte según lo necesite.
+ 
+ 1. Finalmente, abra una consola de comandos desde dentro de su carpeta del proyecto "rest-assured-workshop" y ejecute los siguientes comandos:  
+ 		
+ 		```
+ 		mvn clean test
+ 		
+ 		mvn allure:serve
+ 		
+ 		```
+ 	
+ 	Esto le abrira el reporte en el navegador, navegue el reporte y encuentre donde se encuentran las anotaciones puestas en la clase de prueba. vera algo como lo siguiente:
+ 	![branch rules](https://docs.qameta.io/allure/images/testcase.png)
+ 	
+ 	
+ 	__Nota:__ Lea más acerca de Allure [Aquí](https://docs.qameta.io/allure/#_testng).
+ 

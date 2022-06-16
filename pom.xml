@@ -10,10 +10,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<name>workshop</name>
-	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
 
 	<properties>
+		<aspectj.version>1.8.10</aspectj.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -27,7 +27,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
@@ -48,29 +47,68 @@
 			<version>1.1.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>1.3</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.qameta.allure</groupId>
+			<artifactId>allure-testng</artifactId>
+			<version>2.18.1</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
 		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
 			<plugins>
-				<!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.20</version>
+					<configuration>
+						<argLine>
+							-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+						</argLine>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.aspectj</groupId>
+							<artifactId>aspectjweaver</artifactId>
+							<version>${aspectj.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>io.qameta.allure</groupId>
+					<artifactId>allure-maven</artifactId>
+					<version>2.8</version>
+					<configuration>
+						<reportVersion>2.7.0</reportVersion>
+						<allureDownloadUrl>https://github.com/allure-framework/allure2/releases/download/2.7.0/allure-2.7.0.zip</allureDownloadUrl>
+						<resultsDirectory> ${basedir}\allure-results</resultsDirectory>
+					</configuration>
+				</plugin>
 				<plugin>
 					<artifactId>maven-clean-plugin</artifactId>
 					<version>3.1.0</version>
 				</plugin>
-				<!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
 				<plugin>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>3.0.2</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.0</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.22.1</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-jar-plugin</artifactId>
@@ -84,7 +122,6 @@
 					<artifactId>maven-deploy-plugin</artifactId>
 					<version>2.8.2</version>
 				</plugin>
-				<!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
 				<plugin>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.7.1</version>
