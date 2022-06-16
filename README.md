@@ -309,7 +309,7 @@ Password: password
 
 Empecemos
 
-1. Crea una clase Java llamada "BaseClassAuth.java" en el Packages test: com.restassured.test y cree una peticion para autenticacion con el siguiente codigo, la cual contiene los parametros de petición y autenticación:
+1. Crea una clase Java llamada `BaseClassAuth.java` en el Packages `test`: com.restassured.test y cree una peticion para autenticacion con el siguiente código, la cual contiene los parametros de la petición y autenticación:
 
 	Copie y pegue:
     ```java
@@ -333,7 +333,7 @@ Empecemos
 	}
     ```
 
-1. Ahora crea la clase Java llamada "RestAssuredAuth.java" en el Packages test: com.restassured.test que se extiende de la clase BaseClassAuth y que hace la peticion para la autenticacion.
+1. Ahora crea la clase Java llamada `RestAssuredAuth.java` en el Packages `test`: com.restassured.test que se extiende de la clase `BaseClassAuth.java` y que hace la petición para la autenticación.
 
 	Copie y pegue:
     ```java
@@ -359,7 +359,7 @@ Empecemos
 	}
     ```
     
- 1. Ahora verifiquemos que el metodo de autenticacion quedo correcto. Desde la clase RestAssuredAuth.java ejecuta la prueba, verifica que el codigo de respuesta que se imprime en consola es 200.
+ 1. Ahora verifiquemos que el método de autenticación quedo correcto. Desde la clase `RestAssuredAuth.java` ejecute la prueba y verifique que el código de respuesta que se imprime en consola es 200.
  
  
  ### 4. Assertions con Hamcrest
@@ -433,7 +433,7 @@ Empecemos
 	 <aspectj.version>1.8.10</aspectj.version>
 	 ```
 	    
- 1. En el archivo pom.xml agrega los siguientes plogins que le permitiran generar el reporte. Recuerde que en 
+ 1. En el archivo pom.xml agrega los siguientes plugins que le permitiran generar el reporte. Recuerde que en 
  
 	 Copie y pegue:
 	 ```java
@@ -476,7 +476,7 @@ Empecemos
 	 
  1. Para que los cambios sean tomados actualice las librerías. Desde Eclipse puede hacer clic derecho desde el proyecto, seleccione la opción Maven y luego Update Project. Verifique que este seleccionado el proyecto sobre el cual esta trabajando y luego ejecute OK.
  
- 1. Ahora actialice el metodo "test1" de la clase RestAssuredAuth.java para que quede de la siguiente forma.
+ 1. Ahora actialice el método `test1` de la clase `RestAssuredAuth.java` para que quede de la siguiente forma.
  
  	Copie y pegue:
 	```java
@@ -496,7 +496,7 @@ Empecemos
 	}
 	```
  	
- 	Note que agregamos anotaciones que seran caracteristicas de nuestro reporte en Allure.
+ 	__Nota:__ Estas anotaciones son necesarias, ya que serán características de nuestro reporte en Allure y nos permitirá tener detalles de la prueba en el reporte. Existen otros tipos de anotaciones que le ayudaran a mejorar su reporte según lo necesite.
  
  1. Finalmente, abra una consola de comandos desde dentro de su carpeta del proyecto "rest-assured-workshop" y ejecute los siguientes comandos:  
  		
@@ -511,5 +511,5 @@ Empecemos
  	![branch rules](https://docs.qameta.io/allure/images/testcase.png)
  	
  	
- 	Lea mas acerca de Allure [Aquí](https://docs.qameta.io/allure/#_testng).
+ 	__Nota:__ Lea más acerca de Allure [Aquí](https://docs.qameta.io/allure/#_testng).
  
