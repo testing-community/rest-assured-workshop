@@ -21,7 +21,6 @@ Se asume que la persona tiene conocimientos previos en:
 1. [Authentication en RestAssured](#3-Authentication-en-RestAssured)
 1. [Assertions con Hamcrest](#4-Assertions-con-Hamcrest)
 1. [Configuremos nuestro reporte con Allure](#5-Configuremos-nuestro-reporte-con-Allure)
-1. [Configuremos nuestro reporte con Allure](#5-Configuremos-nuestro-reporte-con-Allure)
 
 ### 1. Configuración Inicial del Proyecto
 
