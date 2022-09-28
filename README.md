@@ -214,7 +214,13 @@ Se asume que la persona tiene conocimientos previos en:
     Luego especificamos la url base (baseURI) a la cual le enviaremos el request.
     Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los header necesarios y el body a enviar, luego la acción que se sería la url base y adicionamos el resto del endpoint para el método post, con el then verificamos el status code de la petición e imprimimos lo que nos retorno el endpoint.
     La parte importante aquí es la acción (when) para especificar el método HTTP.
+
     __Nota:__ Si quisieramos imprimir (por debuguear rápidamente por ejemplo) como esta el request formado, podemos usar `System.out.println(request.toJSONString());`
+
+##### Ejercicio opcional:
+
+ Usando usando esta API de Pokemom ([pokeapi.co]( https://pokeapi.co)), consumir el endpoint GET para obtener la información de un pokemon
+ e imprimir el JSON de respuesta en la consola
 
 #### Creando peticiones PUT, PATCH and DELETE
 1. Crear el archivo `PutPatchDeleteExample.java` en la carpeta de `test`

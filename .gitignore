@@ -54,4 +54,9 @@ buildNumber.properties
 
 test-output/
 .idea/
+.settings/
+bin/
+.allure-results/
 .vscode/
+.classpath
+.project
