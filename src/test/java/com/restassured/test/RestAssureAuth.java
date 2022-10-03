@@ -7,13 +7,12 @@ import io.restassured.RestAssured;
 import static org.hamcrest.Matchers.*;
 
 public class RestAssureAuth extends BaseClassAuth{
-	
-	
-	@Test(priority = 0, description="Valid Autentication Scenario with valid username and password.")
+
+	@Test(description="Valid Authentication Scenario with valid username and password.")
 	@Severity(SeverityLevel.BLOCKER)
 	@Description("Test Description: Login test with valid username and password.")
-	@Story("Get autentication token")
-	@Step("Petition get to autentication")
+	@Story("Get authentication token")
+	@Step("GET request to the authentication")
 	public void test1() {
 		
 		RestAssured.given()
