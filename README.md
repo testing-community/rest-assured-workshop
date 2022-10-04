@@ -108,24 +108,25 @@ Se asume que la persona tiene conocimientos previos en:
     Las dependencias deberian quedar similiar a:
     ```xml
     <dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>rest-assured</artifactId>
-			<version>5.2.0</version>
-			<scope>test</scope>
-		</dependency>
+        <groupId>io.rest-assured</groupId>
+        <artifactId>rest-assured</artifactId>
+        <version>5.2.0</version>
+        <scope>test</scope>
+    </dependency>
 
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>7.5</version>
-			<scope>test</scope>
-		</dependency>
+    <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <!--latest testng supported on java 8-->
+        <version>7.5</version>
+        <scope>test</scope>
+    </dependency>
 
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1.1</version>
-		</dependency>
+    <dependency>
+        <groupId>com.googlecode.json-simple</groupId>
+        <artifactId>json-simple</artifactId>
+        <version>1.1.1</version>
+    </dependency>
     ```
 
 1. Crear carpeta de pruebas (de ahora en adelante `test`)
@@ -159,7 +160,7 @@ Se asume que la persona tiene conocimientos previos en:
     Copie y pegue:
     ```java
     @Test
-	public void testGet() {
+	  public void testGet() {
 		
 		baseURI =  "https://reqres.in/api";
 		
@@ -168,9 +169,8 @@ Se asume que la persona tiene conocimientos previos en:
 		then().
 			statusCode(200).
 			body("data.size()", is(6)).
-			body("data.first_name", hasItems("George", "Rachel"));
-				
-	}
+			body("data.first_name", hasItems("George", "Rachel")); 
+	};
     ```
     Primero definimos la baseURI que especifica la url base donde esta el servicio que consumiremos. Seguidamente prepariamos el request, pero en este caso no tenemos ninguna precondición (given) entonces podemos ir a la acción (when) que define un método al API de tipo GET (get) para el endpoint que retorna los usuarios.
     Finalmente (then) validamos el status code de respuesta y datos del body de respuesta, como que contenga 6 elementos y especificamente contenga George y Rachel.
