@@ -451,7 +451,7 @@ Empecemos
         </dependencies>
     </plugin>
     
-    <!-- Plugin para generar el reporte de allure mediante el comand mvn allure:serve-->
+    <!-- Plugin para generar el reporte de allure mediante el comando mvn allure:serve-->
     <plugin>
         <groupId>io.qameta.allure</groupId>
         <artifactId>allure-maven</artifactId>
