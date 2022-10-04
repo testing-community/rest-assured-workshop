@@ -371,7 +371,7 @@ Empecemos
  1. En el archivo pom.xml agrega la dependencia de Hamcrest All que se encuentra en el repositorio de mavem.
  
 	 Copie y pegue:
-	 ```java
+	 ```xml
 	 <dependency>
 	   <groupId>org.hamcrest</groupId>
 	   <artifactId>hamcrest-all</artifactId>
@@ -391,7 +391,6 @@ Empecemos
 	    
  1. Ahora actialice el metodo "test1" de la clase RestAssuredAuthTest.java para que quede de la siguiente forma.
 
-
 	Copie y pegue:
 	```java
 	public void test1() {
@@ -405,75 +404,72 @@ Empecemos
 	}
 	```
 	  
-	Note que se agregó. `then()` indicando que siguen las aserciones y posteriormente los matchers statusCode para validar que se entregue un código de respuesta válida y el marcher body para verificar que sea el esperado.
+	Note que se agregó. `then()` indicando que siguen las aserciones y posteriormente los matchers statusCode para validar que se entregue un código de respuesta válida y el matcher body para verificar que sea el esperado.
 
  1. Ahora ejecutemos la prueba. Desde la clase `RestAssuredAuthTest.java` ejecute la prueba, verifique que el test quedó OK.
  
- 1. Haga fallar la asercion, en el `statusCode(200)`, cambielo por 300 y ejecute nuevamente. Verá que ahora la prueba queda fallida.
+ 1. Haga fallar la aserción, en el `statusCode(200)`, cambielo por 300 y ejecute nuevamente. Verá que ahora la prueba queda fallida.
  
  Puede ver más Matchers [Aquí]( https://www.javadoc.io/doc/org.hamcrest/hamcrest/2.1/org/hamcrest/Matchers.html).
  
  
   ### 5. Configuremos nuestro reporte con Allure
   
- 1. En el archivo pom.xml agrega la dependencia de Allure que se encuentra en el repositorio de mavem.
+ 1. En el archivo `pom.xml` agregue la dependencia de Allure que se encuentra en el repositorio de maven.
  
 	 Copie y pegue:
-	 ```java
+	 ```xml
 	 <dependency>
-		<groupId>io.qameta.allure</groupId>
-		<artifactId>allure-testng</artifactId>
-		<version>2.18.1</version>
-		<scope>test</scope>
-	</dependency>
-	```
+         <groupId>io.qameta.allure</groupId>
+         <artifactId>allure-testng</artifactId>
+         <version>2.19.0</version>
+         <scope>test</scope>
+     </dependency>
+	 ```
 	
- 1. En el archivo pom.xml agregue en la seccion properties la siguiente linea
+ 1. En el archivo `pom.xml` agregue en la sección `properties` la siguiente línea
  
 	 Copie y pegue:
 	 ```java
 	 <aspectj.version>1.8.10</aspectj.version>
 	 ```
 	    
- 1. En el archivo pom.xml agrega los siguientes plugins que le permitiran generar el reporte. Recuerde que en 
+ 1. En el archivo pom.xml agrega los siguientes plugins que le permitiran generar el reporte. Recuerde que los plugins deben ir en la sección `<build><plugins>` del XML 
  
 	 Copie y pegue:
-	 ```java
+	 ```xml
 	 <plugin>
-	    <groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-compiler-plugin</artifactId>
-		<configuration>
-			<source>1.8</source>
-			<target>1.8</target>
-		</configuration>
-	 </plugin>
-	 <plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-surefire-plugin</artifactId>
-		<version>2.20</version>
-		<configuration>
-			<argLine>
-				-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-			</argLine>
-		</configuration>
-		<dependencies>
-			<dependency>
-				<groupId>org.aspectj</groupId>
-				<artifactId>aspectjweaver</artifactId>
-				<version>${aspectj.version}</version>
-			</dependency>
-		</dependencies>
-		</plugin>
-		<plugin>
-			<groupId>io.qameta.allure</groupId>
-			<artifactId>allure-maven</artifactId>
-			<version>2.8</version>
-			<configuration>
-				<reportVersion>2.7.0</reportVersion>
-				<allureDownloadUrl>https://github.com/allure-framework/allure2/releases/download/2.7.0/allure-2.7.0.zip</allureDownloadUrl>
-				<resultsDirectory> ${basedir}\allure-results</resultsDirectory>
-			</configuration>
-		</plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M7</version>
+        <configuration>
+            <!--Ruta de las clases de prueba-->
+            <includes>
+                <include>com/restassured/test/**.java</include>
+            </includes>
+            <argLine>
+                -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+            </argLine>
+        </configuration>
+        <dependencies>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+        </dependencies>
+    </plugin>
+    
+    <!-- Plugin para generar el reporte de allure mediante el comand mvn allure:serve-->
+    <plugin>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
+        <version>2.11.2</version>
+        <configuration>
+            <reportVersion>2.13.9</reportVersion>
+            <resultsDirectory> ${basedir}/allure-results</resultsDirectory>
+        </configuration>
+    </plugin>
 	 ```
 	 
  1. Para que los cambios sean tomados actualice las librerías. Desde Eclipse puede hacer clic derecho desde el proyecto, seleccione la opción Maven y luego Update Project. Verifique que este seleccionado el proyecto sobre el cual esta trabajando y luego ejecute OK.
@@ -498,19 +494,16 @@ Empecemos
 	}
 	```
  	
- 	__Nota:__ Estas anotaciones son necesarias, ya que serán características de nuestro reporte en Allure y nos permitirá tener detalles de la prueba en el reporte. Existen otros tipos de anotaciones que le ayudaran a mejorar su reporte según lo necesite.
+ 	__Nota:__ Estas anotaciones son necesarias, ya que serán características de nuestro reporte en Allure y nos permitirá tener detalles de la prueba en el reporte. Existen otros tipos de anotaciones que le ayudarán a mejorar su reporte según lo necesite.
  
- 1. Finalmente, abra una consola de comandos desde dentro de su carpeta del proyecto "rest-assured-workshop" y ejecute los siguientes comandos:  
+ 1. Finalmente, abra una consola de comandos desde dentro de su carpeta del proyecto `rest-assured-workshop` y ejecute los siguientes comandos:  
  		
- 		```
- 		mvn clean test
- 		
- 		mvn allure:serve
- 		
- 		```
+    ```shell
+       mvn clean test
+       mvnn allure:serve
+    ```
  	
- 	Esto le abrira el reporte en el navegador, navegue el reporte y encuentre donde se encuentran las anotaciones puestas en la clase de prueba. vera algo como lo siguiente:
- 	![branch rules](https://docs.qameta.io/allure/images/testcase.png)
+ 	Esto le abrirá el reporte en el navegador, navegue el reporte y encuentre las anotaciones puestas en la clase de prueba. 
  	
  	
  	__Nota:__ Lea más acerca de Allure [Aquí](https://docs.qameta.io/allure/#_testng).
