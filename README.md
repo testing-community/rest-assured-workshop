@@ -8,18 +8,12 @@ Se asume que la persona tiene conocimientos previos en:
 * GitHub
 * Conocimiento básico en JAVA
 
-**Recursos**:
-
-* [Wiki](https://github.com/testing-community/rest-assured-workshop/wiki)
-
-## Steps
-
 ### Tabla de Contenido
 
 1. [Configuración Inicial del Proyecto](#1-configuración-inicial-del-proyecto)
 1. [Llamados a métodos HTTP](#2-llamados-a-métodos-http)
-1. [Authentication en RestAssured](#3-Authentication-en-RestAssured)
-1. [Assertions con Hamcrest](#4-Assertions-con-Hamcrest)
+1. [Autenticación en RestAssured](#3-Autenticación-en-RestAssured)
+1. [Aserciones con Hamcrest](#4-Aserciones-con-Hamcrest)
 1. [Configuremos nuestro reporte con Allure](#5-Configuremos-nuestro-reporte-con-Allure)
 
 ### 1. Configuración Inicial del Proyecto
@@ -34,30 +28,30 @@ Se asume que la persona tiene conocimientos previos en:
 1. Instalar plugin de TestNG
     * Click en la pestaña de Help
     * Eclipse Marketplace
-    * En la barra de busqueda poner TestNG
+    * En la barra de búsqueda poner TestNG
     * Instalar la primera, TestNG for Eclipse. De click en Confirm y Finish
     * Marque todas las casillas y click en Trust Selected
-    * Le pedira que reincie eclipse, acepte
+    * Le pedirá que reinicie eclipse, acepte
 1. Iniciar eclipse y crear un nuevo proyecto maven:
     * Archivo (File)
     * Nuevo (New)
     * Otro.. (Other..)
-    * En el cuadro de busqueda poner Maven y seleccionar **Maven Project**
+    * En el cuadro de búsqueda poner Maven y seleccionar **Maven Project**
     * Usar ubicación por defecto o seleccionar una. Siguiente
     * Buscar **maven-archetype-quickstart** del group id apache. Seleccionar y siguiente
     * En Group Id poner: com.restassured
     * En Artifact Id: workshop
     * Click en Finish
-    * En la parte izquierda se genero el proyecto con nombre workshop. Se puede cambiar
+    * En la parte izquierda se generó el proyecto con nombre workshop. Se puede cambiar
 1. Cambiar la librería para que ejecute con Java 8
-    * Abrír el archivo **pom.xml** y cambiar donde esta maven.compiler.source y maven.compiler.target de 1.7 a 1.8. Guardar y cerrar
+    * Abrír el archivo **pom.xml** y cambiar donde esta `maven.compiler.source` y `maven.compiler.target` de `1.7` a `1.8`. Guardar y cerrar
     * Click derecho al proyecto > Maven > Update Project
     * Si al lado derecho de JRE System Library aparece JavaSE-1.8 todo esta funcionando correctamente
 
 1. Crear una cuenta en Github si no la tiene.
 1. Crear un repositorio en limpio dentro de la página de GitHub con el nombre de “**rest-assured-workshop**”
-1. En el equipo, abrir la carpeta donde se creo el proyecto de Maven en eclipse y abrir una consola en esa ruta
-1. Crear archivo .gitignore ```echo "" >> .gitignore```
+1. En el equipo, abrir la carpeta donde se cróo el proyecto de Maven en eclipse y abrir una consola en esa ruta
+1. Crear archivo .gitignore `echo "" >> .gitignore`
 1. Copiar el siguiente contenido y guardar con los cambios
 
     ```
@@ -105,7 +99,7 @@ Se asume que la persona tiene conocimientos previos en:
     * [TestNG](https://mvnrepository.com/artifact/org.testng/testng)
     * [Json-simple](https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple)
 
-    Las dependencias deberian quedar similiar a:
+    Las dependencias deberían quedar similiar a:
     ```xml
     <dependency>
         <groupId>io.rest-assured</groupId>
@@ -132,7 +126,7 @@ Se asume que la persona tiene conocimientos previos en:
 1. Crear carpeta de pruebas (de ahora en adelante `test`)
     * En la ruta `src/test/java/com/restassured` crear carpeta con de nombre `test`
 
-1. Configura tu Git para revision del workshop para cada punto
+1. Configurar Git para revision del workshop para cada punto
 
 1. Proteger la rama `main` para que los pull request requieran revisión de otros desarrolladores y se compruebe el estado de nuestros test ("ok" :heavy_check_mark: o "fallaron" :x:) antes de hacer un merge a la rama.
 
@@ -147,7 +141,7 @@ Se asume que la persona tiene conocimientos previos en:
 ### 2. Llamados a métodos HTTP
 
 #### Creando peticiones GET y POST 
-1. Crear el archivo `GetAndPostExample.java` en la carpeta de `test`
+1. Crear la clase `GetAndPostExample.java` en la carpeta de `test`
     En caso que el archivo este vacío, copie y pegue:
     ```java
     package com.restassured.test;
@@ -172,7 +166,7 @@ Se asume que la persona tiene conocimientos previos en:
 			body("data.first_name", hasItems("George", "Rachel")); 
 	};
     ```
-    Primero definimos la baseURI que especifica la url base donde esta el servicio que consumiremos. Seguidamente prepariamos el request, pero en este caso no tenemos ninguna precondición (given) entonces podemos ir a la acción (when) que define un método al API de tipo GET (get) para el endpoint que retorna los usuarios.
+    Primero definimos la baseURI que especifica la url base donde esta el servicio que consumiremos. Seguidamente preparamos el request, pero en este caso no tenemos ninguna precondición (given) entonces podemos ir a la acción (when) que define un método al API de tipo GET (get) para el endpoint que retorna los usuarios.
     Finalmente (then) validamos el status code de respuesta y datos del body de respuesta, como que contenga 6 elementos y especificamente contenga George y Rachel.
 
 1. Vamos a crear la petición para el POST
@@ -201,9 +195,9 @@ Se asume que la persona tiene conocimientos previos en:
 				
 	}
     ```
-    Primero preparamos la request que enviaremos como un Json, para esto usamos la clase JSONObject y después imprimimos como se veria ese json que creamos.
+    Primero preparamos la request que enviaremos como un JSON, para esto usamos la clase JSONObject y después imprimimos como se vería ese JSON que creamos.
     Luego especificamos la url base (baseURI) a la cual le enviaremos el request.
-    Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los header necesarios y el body a enviar, luego la acción que se sería la url base y adicionamos el resto del endpoint para el método post, con el then verificamos el status code de la petición e imprimimos lo que nos retorno el endpoint.
+    Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los header necesarios y el body a enviar, luego la acción que sería la url base y adicionamos el resto del endpoint para el método post, con el then verificamos el status code de la petición e imprimimos lo que nos retornó el endpoint.
     La parte importante aquí es la acción (when) para especificar el método HTTP.
 
     __Nota:__ Si quisieramos imprimir (por debuguear rápidamente por ejemplo) como esta el request formado, podemos usar `System.out.println(request.toJSONString());`
@@ -271,7 +265,7 @@ Se asume que la persona tiene conocimientos previos en:
 				
 	}
     ```
-    Primero preparamos la request que enviaremos como un Json, para esto usamos la clase JSONObject y después imprimimos como se veria ese json que creamos.
+    Primero preparamos la request que enviaremos como un JSON, para esto usamos la clase JSONObject y después imprimimos como se veria ese json que creamos.
     Luego especificamos la url base (baseURI) a la cual le enviaremos el request.
     Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los header necesarios y el body a enviar, luego la acción que se sería la url base y adicionamos el resto del endpoint para el método (put o patch), con el then verificamos el status code de la petición e imprimimos lo que nos retorno el endpoint.
     La parte importante aquí es la acción (when) para especificar el método HTTP.
@@ -295,15 +289,13 @@ Se asume que la persona tiene conocimientos previos en:
     En este caso no es necesario definir precondiciones o preparar lo que enviaremos (Given), debido a que el método DELETE de este endpoint solo se le especifica en la url (eliminar el usuario con id 2). Finalmente validamos el status code e imprimimos la respuesta de la petición.
 
 
-### 3. Authentication en RestAssured
+### 3. Autenticación en RestAssured
 
 Muchos servicios requieren de autenticación para consumir sus métodos, en este ejercicio vamos a construir un ejemplo de autenticación básica (Basic Auth).
-
 
 Para esto utilizaremos el recurso [basic-auth de postman]( https://postman-echo.com/basic-auth). El endpoint acepta un nombre de usuario y una contraseña predeterminados y devuelve un código de estado de 200 ok, solo si se proporciona el mismo correctamente. De lo contrario, devolverá un código de estado 401 no autorizado.
 
 La información de autenticacion del servicio es:
-
 
 **Username**: _postman_
 
@@ -311,7 +303,7 @@ La información de autenticacion del servicio es:
 
 Empecemos
 
-1. Crea una clase Java llamada `BaseClassAuth.java` en el Packages `test`: com.restassured.test y cree una peticion para autenticacion con el siguiente código, la cual contiene los parametros de la petición y autenticación:
+1. Cree una clase Java llamada `BaseClassAuth.java` en el paquete `com.restassured.test` y cree una peticion para autenticacion con el siguiente código, la cual contiene los parámetros de la petición y autenticación:
 
 	Copie y pegue:
     ```java
@@ -335,7 +327,7 @@ Empecemos
 	}
     ```
 
-1. Ahora cree una clase Java llamada `RestAssuredAuthTest.java` en el paquete _test_: `com.restassured.test` que extienda de la clase `BaseClassAuth.java` y que hace la petición para la autenticación.
+1. Ahora cree una clase Java llamada `RestAssuredAuthTest.java` en el paquete `com.restassured.test` que extienda de la clase `BaseClassAuth.java` y que hace la petición para la autenticación.
 
 	Copie y pegue:
     ```java
@@ -361,14 +353,13 @@ Empecemos
 	}
     ```
     
- 1. Ahora verifiquemos que el método de autenticación quedo correcto. Desde la clase `RestAssuredAuthTest.java` ejecute la prueba y verifique que el código de respuesta que se imprime en consola es 200.
+ 1. Ahora verifiquemos que el método de autenticación quedó correcto. Desde la clase `RestAssuredAuthTest.java` ejecute la prueba y verifique que el código de respuesta que se imprime en consola es 200.
  
- 
- ### 4. Assertions con Hamcrest
+ ### 4. Aserciones con Hamcrest
  
  Vamos a realizar la verificación de una de nuestras pruebas. Para esto usaremos Hamcrest. Lo primero que debemos hacer es agregar la librería que nos permite hacer las aserciones.
  
- 1. En el archivo pom.xml agrega la dependencia de Hamcrest All que se encuentra en el repositorio de mavem.
+ 1. En el archivo pom.xml agregue la dependencia de `hamcrest-all` que se encuentra en el repositorio de maven.
  
 	 Copie y pegue:
 	 ```xml
@@ -389,7 +380,7 @@ Empecemos
 	import static org.hamcrest.Matchers.*;
 	```
 	    
- 1. Ahora actialice el metodo "test1" de la clase RestAssuredAuthTest.java para que quede de la siguiente forma.
+ 1. Ahora actualice el metodo "test1" de la clase `RestAssuredAuthTest.java` para que quede de la siguiente forma.
 
 	Copie y pegue:
 	```java
@@ -404,13 +395,13 @@ Empecemos
 	}
 	```
 	  
-	Note que se agregó. `then()` indicando que siguen las aserciones y posteriormente los matchers statusCode para validar que se entregue un código de respuesta válida y el matcher body para verificar que sea el esperado.
+	Note que se agregó `then()` indicando que siguen las aserciones y posteriormente los matchers statusCode para validar que se entregue un código de respuesta válida y el matcher body para verificar que sea el esperado.
 
- 1. Ahora ejecutemos la prueba. Desde la clase `RestAssuredAuthTest.java` ejecute la prueba, verifique que el test quedó OK.
+ 1. Ahora ejecutemos la prueba: Para esto, ejecute la clase `RestAssuredAuthTest.java` y verifique que el test quedó OK.
  
- 1. Haga fallar la aserción, en el `statusCode(200)`, cambielo por 300 y ejecute nuevamente. Verá que ahora la prueba queda fallida.
+ 1. Haga fallar la aserción: en el `statusCode(200)`, cambíelo por 300 y ejecute nuevamente. Verá que ahora la prueba queda fallida.
  
- Puede ver más Matchers [Aquí]( https://www.javadoc.io/doc/org.hamcrest/hamcrest/2.1/org/hamcrest/Matchers.html).
+ Puede ver más Matchers [aquí]( https://www.javadoc.io/doc/org.hamcrest/hamcrest/2.1/org/hamcrest/Matchers.html).
  
  
   ### 5. Configuremos nuestro reporte con Allure
@@ -434,7 +425,7 @@ Empecemos
 	 <aspectj.version>1.8.10</aspectj.version>
 	 ```
 	    
- 1. En el archivo pom.xml agrega los siguientes plugins que le permitiran generar el reporte. Recuerde que los plugins deben ir en la sección `<build><plugins>` del XML 
+ 1. En el archivo `pom.xml` agrega los siguientes plugins que le permitiran generar el reporte. Recuerde que los plugins deben ir en la sección `<build><plugins>` del XML 
  
 	 Copie y pegue:
 	 ```xml
@@ -472,9 +463,9 @@ Empecemos
     </plugin>
 	 ```
 	 
- 1. Para que los cambios sean tomados actualice las librerías. Desde Eclipse puede hacer clic derecho desde el proyecto, seleccione la opción Maven y luego Update Project. Verifique que este seleccionado el proyecto sobre el cual esta trabajando y luego ejecute OK.
+ 1. Para que los cambios sean tomados actualice las librerías. Desde Eclipse puede hacer clic derecho desde el proyecto, seleccione la opción Maven y luego Update Project. Verifique que esté seleccionado el proyecto sobre el cual esta trabajando y luego ejecute OK.
  
- 1. Ahora actialice el método `test1` de la clase `RestAssuredAuthTest.java` para que quede de la siguiente forma.
+ 1. Ahora actualice el método `test1` de la clase `RestAssuredAuthTest.java` para que quede de la siguiente forma.
  
  	Copie y pegue:
 	```java
@@ -494,7 +485,7 @@ Empecemos
 	}
 	```
  	
- 	__Nota:__ Estas anotaciones son necesarias, ya que serán características de nuestro reporte en Allure y nos permitirá tener detalles de la prueba en el reporte. Existen otros tipos de anotaciones que le ayudarán a mejorar su reporte según lo necesite.
+ 	__Nota:__ Estas anotaciones son necesarias, ya que serán mostradas en el reporte de Allure y nos permitirá tener detalles de la prueba en el reporte. Existen otros tipos de anotaciones que le ayudarán a mejorar su reporte según lo necesite.
  
  1. Finalmente, abra una consola de comandos desde dentro de su carpeta del proyecto `rest-assured-workshop` y ejecute los siguientes comandos:  
  		
@@ -502,9 +493,6 @@ Empecemos
        mvn clean test
        mvnn allure:serve
     ```
+ 	Esto le abrirá el reporte en el navegador, navegue el reporte y encuentre las anotaciones puestas en la clase de prueba.
  	
- 	Esto le abrirá el reporte en el navegador, navegue el reporte y encuentre las anotaciones puestas en la clase de prueba. 
- 	
- 	
- 	__Nota:__ Lea más acerca de Allure [Aquí](https://docs.qameta.io/allure/#_testng).
- 
+ 	__Nota:__ Lea más acerca de Allure [aquí](https://docs.qameta.io/allure#_testng).
