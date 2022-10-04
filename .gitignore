@@ -60,4 +60,4 @@ bin/
 .classpath
 .project
 .allure
-allure-results/*
+allure-results/*.json
