@@ -106,35 +106,26 @@ Se asume que la persona tiene conocimientos previos en:
     * [Json-simple](https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple)
 
     Las dependencias deberian quedar similiar a:
-    ```go
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
+    ```xml
+    <dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>5.2.0</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>5.0.1</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>7.5</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.5</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-	</dependencies>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
     ```
 
 1. Crear carpeta de pruebas (de ahora en adelante `test`)
@@ -149,8 +140,8 @@ Se asume que la persona tiene conocimientos previos en:
 
 1. Añadir como colaboradores (ir a settings del repositorio y en Collaborators) a:
    * [dianakrog](https://github.com/dianakrog)
-   * [Scot3004](https://github.com/Scot3004)
    * [kliver98](https://github.com/kliver98)
+   * [diegomtylop](https://github.com/diegomtylop)
 
 ### 2. Llamados a métodos HTTP
 
@@ -313,8 +304,10 @@ Para esto utilizaremos el recurso [basic-auth de postman]( https://postman-echo.
 
 La información de autenticacion del servicio es:
 
-Username: postman
-Password: password
+
+**Username**: _postman_
+
+**Password**: _password_
 
 Empecemos
 
@@ -342,7 +335,7 @@ Empecemos
 	}
     ```
 
-1. Ahora crea la clase Java llamada `RestAssuredAuth.java` en el Packages `test`: com.restassured.test que se extiende de la clase `BaseClassAuth.java` y que hace la petición para la autenticación.
+1. Ahora cree una clase Java llamada `RestAssuredAuthTest.java` en el paquete _test_: `com.restassured.test` que extienda de la clase `BaseClassAuth.java` y que hace la petición para la autenticación.
 
 	Copie y pegue:
     ```java
@@ -368,7 +361,7 @@ Empecemos
 	}
     ```
     
- 1. Ahora verifiquemos que el método de autenticación quedo correcto. Desde la clase `RestAssuredAuth.java` ejecute la prueba y verifique que el código de respuesta que se imprime en consola es 200.
+ 1. Ahora verifiquemos que el método de autenticación quedo correcto. Desde la clase `RestAssuredAuthTest.java` ejecute la prueba y verifique que el código de respuesta que se imprime en consola es 200.
  
  
  ### 4. Assertions con Hamcrest
@@ -396,7 +389,7 @@ Empecemos
 	import static org.hamcrest.Matchers.*;
 	```
 	    
- 1. Ahora actialice el metodo "test1" de la clase RestAssuredAuth.java para que quede de la siguiente forma.
+ 1. Ahora actialice el metodo "test1" de la clase RestAssuredAuthTest.java para que quede de la siguiente forma.
 
 
 	Copie y pegue:
@@ -412,13 +405,13 @@ Empecemos
 	}
 	```
 	  
-	Note que se agregó. then() indicando que siguen las aserciones y posteriormente los matchers statusCode para validar que se entregue un Código de respuesta valida y el marcher body para verificar que sea el esperado.
+	Note que se agregó. `then()` indicando que siguen las aserciones y posteriormente los matchers statusCode para validar que se entregue un código de respuesta válida y el marcher body para verificar que sea el esperado.
 
- 1. Ahora ejecutemos la prueba. Desde la clase RestAssuredAuth.java ejecuta la prueba, verifica que el test quedo OK.
+ 1. Ahora ejecutemos la prueba. Desde la clase `RestAssuredAuthTest.java` ejecute la prueba, verifique que el test quedó OK.
  
- 1. Has fallar tu asercion, en el statusCode(200), cambialo por 300 y ejecuta nuevamente. Veras que ahora la prueba quedo fallida.
+ 1. Haga fallar la asercion, en el `statusCode(200)`, cambielo por 300 y ejecute nuevamente. Verá que ahora la prueba queda fallida.
  
- Puedes ver más Matchers [Aquí]( https://www.javadoc.io/doc/org.hamcrest/hamcrest/2.1/org/hamcrest/Matchers.html).
+ Puede ver más Matchers [Aquí]( https://www.javadoc.io/doc/org.hamcrest/hamcrest/2.1/org/hamcrest/Matchers.html).
  
  
   ### 5. Configuremos nuestro reporte con Allure
@@ -485,7 +478,7 @@ Empecemos
 	 
  1. Para que los cambios sean tomados actualice las librerías. Desde Eclipse puede hacer clic derecho desde el proyecto, seleccione la opción Maven y luego Update Project. Verifique que este seleccionado el proyecto sobre el cual esta trabajando y luego ejecute OK.
  
- 1. Ahora actialice el método `test1` de la clase `RestAssuredAuth.java` para que quede de la siguiente forma.
+ 1. Ahora actialice el método `test1` de la clase `RestAssuredAuthTest.java` para que quede de la siguiente forma.
  
  	Copie y pegue:
 	```java
