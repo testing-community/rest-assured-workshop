@@ -155,15 +155,14 @@ Se asume que la persona tiene conocimientos previos en:
     ```java
     @Test
 	  public void testGet() {
-		
-		baseURI =  "https://reqres.in/api";
+		RestAssured.baseURI = "https://reqres.in/api";
 		
 		when().
 			get("/users?page=2").
 		then().
 			statusCode(200).
 			body("data.size()", is(6)).
-			body("data.first_name", hasItems("George", "Rachel")); 
+			body("data.first_name", hasItems("George", "Rachel"));
 	};
     ```
     Primero definimos la baseURI que especifica la url base donde esta el servicio que consumiremos. Seguidamente preparamos el request, pero en este caso no tenemos ninguna precondición (given) entonces podemos ir a la acción (when) que define un método al API de tipo GET (get) para el endpoint que retorna los usuarios.
@@ -180,8 +179,8 @@ Se asume que la persona tiene conocimientos previos en:
 		
 		request.put("name", "Raghav");
 		request.put("job", "Teacher");
-		
-		baseURI =  "https://reqres.in/api";
+
+		RestAssured.baseURI =  "https://reqres.in/api";
 		
 		given().
 			header("Content-Type", "application/json").
@@ -192,7 +191,6 @@ Se asume que la persona tiene conocimientos previos en:
 		then().
 			statusCode(201).
 			log().all();
-				
 	}
     ```
     Primero preparamos la request que enviaremos como un JSON, para esto usamos la clase JSONObject y después imprimimos como se vería ese JSON que creamos.
