@@ -226,7 +226,7 @@ Se asume que la persona tiene conocimientos previos en:
 		request.put("name", "Raghav");
 		request.put("job", "Teacher");
 		
-		baseURI =  "https://reqres.in/api";
+		RestAssured.baseURI =  "https://reqres.in/api";
 		
 		given().
 			header("Content-Type", "application/json").
@@ -249,7 +249,7 @@ Se asume que la persona tiene conocimientos previos en:
 		request.put("name", "Raghav");
 		request.put("job", "Teacher");
 		
-		baseURI =  "https://reqres.in";
+		RestAssured.baseURI =  "https://reqres.in";
 		
 		given().
 			header("Content-Type", "application/json").
@@ -274,7 +274,7 @@ Se asume que la persona tiene conocimientos previos en:
     @Test
 	public void testDelete() {
 		
-		baseURI =  "https://reqres.in";
+		RestAssured.baseURI =  "https://reqres.in";
 		
 		when().
 			delete("/api/users/2").

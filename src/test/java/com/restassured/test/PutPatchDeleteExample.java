@@ -2,6 +2,7 @@ package com.restassured.test;
 
 import static io.restassured.RestAssured.*;
 
+import io.restassured.RestAssured;
 import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
 
@@ -17,7 +18,7 @@ public class PutPatchDeleteExample {
 		request.put("name", "Raghav");
 		request.put("job", "Teacher");
 		
-		baseURI =  "https://reqres.in/api";
+		RestAssured.baseURI =  "https://reqres.in/api";
 		
 		given().
 			header("Content-Type", "application/json").
@@ -28,7 +29,6 @@ public class PutPatchDeleteExample {
 		then().
 			statusCode(200).
 			log().all();
-				
 	}
 	
 	@Test
@@ -38,8 +38,8 @@ public class PutPatchDeleteExample {
 		
 		request.put("name", "Raghav");
 		request.put("job", "Teacher");
-		
-		baseURI =  "https://reqres.in";
+
+		RestAssured.baseURI =  "https://reqres.in";
 		
 		given().
 			header("Content-Type", "application/json").
@@ -50,20 +50,17 @@ public class PutPatchDeleteExample {
 		then().
 			statusCode(200).
 			log().all();
-				
 	}
 	
 	@Test
 	public void testDelete() {
-		
-		baseURI =  "https://reqres.in";
-		
+
+		RestAssured.baseURI =  "https://reqres.in";
+
 		when().
 			delete("/api/users/2").
 		then().
 			statusCode(204).
 			log().all();
-				
 	}
-
 }
