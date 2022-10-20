@@ -63,7 +63,7 @@ Se asume que la persona tiene conocimientos previos en:
 1. Crear un repositorio en limpio dentro de la página de GitHub con el nombre de **rest-assured-workshop**
 1. En el equipo, abrir la carpeta donde se creo el proyecto de Maven en eclipse y abrir una consola en esa ruta
 1. Crear archivo .gitignore ```echo "" >> .gitignore```
-1. Copiar, pegar y guardar el siguiente contenido. Esto excluira que se suban archivos al repositorio con estas extensiones:
+1. Copiar, pegar y guardar el siguiente contenido. Esto excluirá que se suban archivos al repositorio con estas extensiones:
 
     ```
     # Compiled class file
