@@ -1,12 +1,21 @@
 # Rest Assured Workshop
 
-!Bienvenido! El objetivo de este taller es aprender sobre llamados rest con [RestAssured](https://rest-assured.io/). Mediante el desarrollo de varios ejercicios prácticos, se abarcará diferentes temas.
+!Bienvenido! El objetivo de este taller es aprender sobre llamados rest con [RestAssured](https://rest-assured.io/). Durante el taller exploraremos la configuración de un proyecto desde cero (creará un repositorio con su cuenta), prepararlo para un proceso de integración continua por medio de Github actions y se abarcarán varios ejercicios prácticos, incluyendo temas como llamados HTTP, códigos de respuesta, reportes y mucho más.
+
+Para el desarrollo del taller usaremos [GitHub](https://github.com/) y [GitHub Flow](https://docs.github.com/en/get-started/quickstart/github-flow) para realizar la entrega de cada ejercicio práctico.
 
 Se asume que la persona tiene conocimientos previos en:
 
 * Git (Puede seguir este [enlace](https://services.github.com/on-demand/downloads/es_ES/github-git-cheat-sheet/) con los comandos más utilizados en git)
 * GitHub
-* Conocimiento básico en JAVA
+* Conocimiento básico en JAVA (Clases, Objetos, POM)
+
+#### Tips de GitHub Flow:
+
+1. Para cada ejercicio crear una rama (Investiga: _gitflow naming conventions_ )
+1. Crea un Pull Request (PR) por cada punto (Recuerda las interacciones como comentarios en inglés)
+1. Después de que se recibe aprobación de cada punto por parte de los colaboradores (punto 1.17) se debe hacer merge de la rama, utilizando squash and merge.
+1. Antes de empezar un nuevo punto se debe hacer pull de main para asegurarnos que tenemos los últimos cambios del anterior punto.
 
 ### Tabla de Contenido
 
@@ -22,7 +31,7 @@ Se asume que la persona tiene conocimientos previos en:
 
 **Nota:** Si no tiene conocimiento sobre Github se le recomienda realizar las [Guias de Github](https://guides.github.com/activities/hello-world/) o el lab de [Introduction to Github](https://lab.github.com/githubtraining/introduction-to-github)
 
-1. [Instalar JDK](https://www.oracle.com/co/java/technologies/javase/javase8u211-later-archive-downloads.html) en su equipo si no lo tiene instalado
+1. [Instalar JDK 8](https://www.oracle.com/co/java/technologies/javase/javase8u211-later-archive-downloads.html) en su equipo si no lo tiene instalado
 1. [Instalar Eclipse](https://www.eclipse.org/downloads/) en su equipo si no lo tiene instalado (Eclipse IDE for Java Developers).
 1. Configurar la variable de ambiente [JAVA_HOME](https://www.codejava.net/java-core/how-to-set-java-home-environment-variable-on-windows-10)
 1. Instalar plugin de TestNG
@@ -49,10 +58,10 @@ Se asume que la persona tiene conocimientos previos en:
     * Si al lado derecho de JRE System Library aparece JavaSE-1.8 todo esta funcionando correctamente
 
 1. Crear una cuenta en Github si no la tiene.
-1. Crear un repositorio en limpio dentro de la página de GitHub con el nombre de “**rest-assured-workshop**”
-1. En el equipo, abrir la carpeta donde se cróo el proyecto de Maven en eclipse y abrir una consola en esa ruta
-1. Crear archivo .gitignore `echo "" >> .gitignore`
-1. Copiar el siguiente contenido y guardar con los cambios
+1. Crear un repositorio en limpio dentro de la página de GitHub con el nombre de **rest-assured-workshop**
+1. En el equipo, abrir la carpeta donde se creó el proyecto de Maven en eclipse y abrir una consola en esa ruta
+1. Crear archivo .gitignore ```echo "" >> .gitignore```
+1. Copiar, pegar y guardar el siguiente contenido. Esto evitará que se suban archivos al repositorio con estas extensiones:
 
     ```
     # Compiled class file
@@ -135,8 +144,9 @@ Se asume que la persona tiene conocimientos previos en:
 
 1. Añadir como colaboradores (ir a settings del repositorio y en Collaborators) a:
    * [dianakrog](https://github.com/dianakrog)
-   * [kliver98](https://github.com/kliver98)
    * [diegomtylop](https://github.com/diegomtylop)
+   * [kliver98](https://github.com/kliver98)
+   * [Scot3004](https://github.com/Scot3004)
 
 ### 2. Llamados a métodos HTTP
 
