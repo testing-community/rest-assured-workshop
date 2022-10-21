@@ -164,7 +164,7 @@ Se asume que la persona tiene conocimientos previos en:
     Copie y pegue:
     ```java
     @Test
-	  public void testGet() {
+    public void testGet() {
 		RestAssured.baseURI = "https://reqres.in/api";
 		
 		when().
@@ -212,12 +212,11 @@ Se asume que la persona tiene conocimientos previos en:
 
 ##### Ejercicio opcional:
 
- Usando usando esta API de Pokemom ([pokeapi.co]( https://pokeapi.co)), consumir el endpoint GET para obtener la información de un pokemon
+ Usando usando esta API de Pokémon ([pokeapi.co]( https://pokeapi.co)), consumir el endpoint GET para obtener la información de un pokémon
  e imprimir el JSON de respuesta en la consola
 
 #### Creando peticiones PUT, PATCH and DELETE
-1. Crear el archivo `PutPatchDeleteExample.java` en la carpeta de `test`
-    En caso que el archivo este vacío, copie y pegue:
+1. Crear la clase `PutPatchDeleteExample.java` en la carpeta de `test`. En caso que el archivo este vacío, copie y pegue:
     ```java
     package com.restassured.test;
 
