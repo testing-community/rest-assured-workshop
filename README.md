@@ -26,6 +26,7 @@ Se asume que la persona tiene conocimientos previos en:
 1. [Autenticación en RestAssured](#3-Autenticación-en-RestAssured)
 1. [Aserciones con Hamcrest](#4-Aserciones-con-Hamcrest)
 1. [Configuremos nuestro reporte con Allure](#5-Configuremos-nuestro-reporte-con-Allure)
+1. [6. Ejercicio final usando una API real](#6-Ejercicio-final-usando-una-API-real)
 
 ### 1. Configuración Inicial del Proyecto
 
@@ -506,7 +507,7 @@ Empecemos
  	
  	__Nota:__ Lea más acerca de Allure [aquí](https://docs.qameta.io/allure#_testng).
 
-### 6. Ahora en una API Real
+### 6. Ejercicio final usando una API real
 
 Para este punto usaremos una API real que tiene algunos endpoints de acceso público y otros 
 que requieren autenticación, la documentación de cada endpoint se puede consultar en el siguiente enlace
