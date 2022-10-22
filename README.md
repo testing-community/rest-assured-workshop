@@ -313,14 +313,12 @@ La información de autenticacion del servicio es:
 
 Empecemos
 
-1. Cree una clase Java llamada `BaseClassAuth.java` en el paquete `com.restassured.test` y cree una peticion para autenticacion con el siguiente código, la cual contiene los parámetros de la petición y autenticación:
+1. Cree una clase Java llamada `BaseClassAuth.java` en el paquete `com.restassured.test` y cree una peticion para autenticación con el siguiente código, la cual contiene los parámetros de la petición y autenticación:
 
 	Copie y pegue:
     ```java
 	package com.restassured.test;
-	
 	import org.testng.annotations.BeforeClass;
-	
 	import io.restassured.RestAssured;
 	
 	public class BaseClassAuth {
