@@ -413,7 +413,7 @@ Empecemos
  Puede ver más Matchers [aquí]( https://www.javadoc.io/doc/org.hamcrest/hamcrest/2.1/org/hamcrest/Matchers.html).
  
  
-  ### 5. Configuremos nuestro reporte con Allure
+### 5. Configuremos nuestro reporte con Allure
   
  1. En el archivo `pom.xml` agregue la dependencia de Allure que se encuentra en el repositorio de maven.
  
@@ -505,3 +505,131 @@ Empecemos
  	Esto le abrirá el reporte en el navegador, navegue el reporte y encuentre las anotaciones puestas en la clase de prueba.
  	
  	__Nota:__ Lea más acerca de Allure [aquí](https://docs.qameta.io/allure#_testng).
+
+### 6. Ahora en una API Real
+
+Para este punto usaremos una API real que tiene algunos endpoints de acceso público y otros 
+que requieren autenticación, la documentación de cada endpoint se puede consultar en el siguiente enlace
+https://automation-practice.herokuapp.com/swagger-ui/
+
+#### Acceso a los endpoints que requieren autenticación.
+
+Para acceder a los endpoints que requieren autenticación, 
+es necesario primero obtener un token válido, 
+dicho token se obtiene haciendo una petición tipo *POST* al endpoint `/login`
+enviando credenciales válidas en el payload
+```json
+{ 
+"password": "admin", 
+"username": "admin" 
+} 
+```
+Si las credenciales son válidas, el servicio va a retornar un JSON como el siguiente.
+
+```json
+{
+    "token": "<token>",
+    "type": "Bearer",
+    "id": "<id>",
+    "username": "username",
+    "email": "username@domain.com",
+    "roles": [
+        "mod",
+        "user",
+        "admin"
+    ]
+} 
+```
+
+El valor retornado en el campo token se debe enviar en el header de las peticiones que requieran autenticación de la siguiente forma:
+
+`Authorization: Bearer <token>`
+
+#### Ejercicio a desarrollar
+
+A continuación se listan varios escenario de prueba para la API mencionada usando sintaxis *gherkin*, 
+para cada uno de los "features" cree una clase Test e implemente 
+un método por cada uno de los escenarios que haga las validaciones enunciadas haciendo uso de rest assured
+y los conceptos vistos durante el workshop
+
+#### Servicios que no requieren autenticación
+
+```gherkin
+Feature: Gestionar los roles de usuario que acceden a la plataforma para el manejo de habilidades 
+    Scenario: Listar todos los roles disponibles en el sistema 
+        Given el servicio de gestión de los roles "role-test-controller"  
+        When se hace una petición GET al endpoint /api/test/roles  
+        Then el servicio responde un código 200 
+        And en el cuerpo de la respuesta se presenta una lista con los roles disponibles en el sistema 
+    
+    Scenario: Consultar un rol por código 
+        Given el servicio de gestión de los roles "role-test-controller"  
+        When se hace una petición GET al endpoint /api/test/roles /{id} especificando el id de un rol existente 
+        Then el servicio responde un código 200 
+        And en el cuerpo de la respuesta se presenta la información del rol que debe incluir el campo "id" y "name" 
+     
+    Scenario: Validar la creación de un rol de usuario 
+        Given el servicio de gestión de los roles "role-testController"  
+        When se hace una petición POST al endpoint /api/test/roles con el nombre de un rol que no existente 
+        Then el servicio responde un código 201 
+        And en el cuerpo de la respuesta se presenta el nombre del rol creado y el id asignado 
+        When se consultan los roles de usuario haciendo una petición GET al endpoint /api/test/roles 
+        Then el servicio presenta el rol creado anteriormente en la lista de resultados en el cuerpo de la respuesta. 
+    
+    Scenario: Verificar que no se puedan crear roles iguales 
+        Given el servicio de gestión de los roles "role-testController"  
+        When se hace una petición POST al endpoint /api/test/roles con un valor de name de un rol ya existente 
+        Then el servicio retorna un error HTTP 400 
+        And el cuerpo de la respuesta debe incluir el campo "message" con valor "Name XXX already exist" 
+```
+
+#### Servicios que requieren autenticación
+
+```
+Feature: Gestionar los usuarios de la aplicación 
+
+    Scenario: verificar que se pueda crear un usuario y este quede disponible para consultar 
+        Given el servicio de gestión de los usuarios "user-controller" con autenticación válida 
+        When se hace una petición POST al endpoint /user con información valida de un usuario no existente 
+        Then el servicio responde con código 201 
+        And el cuerpo de la respuesta presenta el nombre del usuario creado, el id asignado y el email 
+        When se consultan los usuarios haciendo una petición GET al endpoint /users 
+        Then La respuesta del servicio presenta una lista de usuario existentes que debe incluir el usuario recién creado 
+    
+    Scenario: verificar que los usuarios puedan ser actualizados 
+        Given el servicio de gestión de los usuarios "user-controller" con autenticación válida 
+        When cuando se hace una petición PUT al endpoint /users para un usuario existente (enviando el nombre de usuario como variable de "path") 
+        And información nueva para el usuario en los parámetros username y email enviados en el payload del request 
+        Then el servicio responde con código HTTP 200 
+    
+    Scenario: Verificar que para poder crear nuevos usuarios se deba estar autenticado en el sistema 
+        Given el servicio de gestión de habilidades "user-controller" sin autenticación válida 
+        When se hace una petición POST al endpoint /user con información valida de un usuario no existente 
+        Then el servicio responde un código HTTP 401 
+
+Feature: Gestionar los habilidades para los usuarios 
+
+    Scenario: verificar que no se puedan crear habilidades iguales 
+        Given el servicio de gestión de habilidades "skill-controller" con autenticación válida 
+        When se hace una petición POST al endpoint /skills con un nombre de habilidad ya existente 
+        Then el servicio responde un código HTTP 400 
+        And en el cuerpo de la respuesta debe estar el campo "message" con valor "Name XXXX already exist". 
+    
+    Scenario: Verificar la creación de skills 
+        Given el servicio de gestión de habilidades "skill-controller" con autenticación válida 
+        When se hace una petición POST al endpoint /skills con un nombre de habilidad NO existente 
+        Then el servicio responde un código HTTP 201 
+        And en el cuerpo de la respuesta debe tener  el parámetro "name" con el nombre del habilidad recién creado y un Id. 
+    
+    Scenario: Verificar que se puedan borrar habilidades 
+        Given el servicio de gestión de habilidades "skill-controller" con autenticación válida 
+        When cuando hace una petición DELETE al endpoint /skills con un ID existente, 
+        Then el servicio responde con código HTTP 204 
+        When se consultan los habilidades haciendo una petición GET al endpoint /skills 
+        Then la respuesta del servicio presenta una lista de los habilidades existentes que NO debe incluir la habilidad recién eliminada 
+    
+    Scenario: Verificar que para poder crear nuevas habilidades se deba estar autenticado en el sistema 
+        Given el servicio de gestión de habilidades "skill-controller" sin autenticación válida 
+        When se hace una petición POST al endpoint /skills con un nombre de habilidad NO existente 
+        Then el servicio responde un código HTTP 401 
+```
