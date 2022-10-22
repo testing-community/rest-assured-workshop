@@ -584,6 +584,7 @@ Feature: Gestionar los roles de usuario que acceden a la plataforma para el mane
         And el cuerpo de la respuesta debe incluir el campo "message" con valor "Name XXX already exist" 
 ```
 
+
 #### Escenarios para el endpoint de gestión de usuarios (requiere autenticación)
 
 ```gherkin
@@ -609,9 +610,10 @@ Feature: Gestionar los usuarios de la aplicación
         Then el servicio responde un código HTTP 401 
 ```
 
+
 #### Escenarios para el endpoint de gestión de habilidades(skills) (requiere autenticación)
 
-```
+```gherkin
 Feature: Gestionar los habilidades para los usuarios 
 
     Scenario: verificar que no se puedan crear habilidades iguales 
