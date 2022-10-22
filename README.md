@@ -555,7 +555,8 @@ y los conceptos vistos durante el workshop
 #### Servicios que no requieren autenticación
 
 ```gherkin
-Feature: Gestionar los roles de usuario que acceden a la plataforma para el manejo de habilidades 
+Feature: Gestionar los roles de usuario que acceden a la plataforma para el manejo de habilidades
+ 
     Scenario: Listar todos los roles disponibles en el sistema 
         Given el servicio de gestión de los roles "role-test-controller"  
         When se hace una petición GET al endpoint /api/test/roles  
@@ -585,7 +586,7 @@ Feature: Gestionar los roles de usuario que acceden a la plataforma para el mane
 
 #### Servicios que requieren autenticación
 
-```
+```gherkin
 Feature: Gestionar los usuarios de la aplicación 
 
     Scenario: verificar que se pueda crear un usuario y este quede disponible para consultar 
