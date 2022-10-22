@@ -552,7 +552,7 @@ para cada uno de los "features" cree una clase Test e implemente
 un método por cada uno de los escenarios que haga las validaciones enunciadas haciendo uso de rest assured
 y los conceptos vistos durante el workshop
 
-#### Servicios que no requieren autenticación
+#### Escenarios para el endpoint de roles (no requiere autenticación)
 
 ```gherkin
 Feature: Gestionar los roles de usuario que acceden a la plataforma para el manejo de habilidades
@@ -584,7 +584,7 @@ Feature: Gestionar los roles de usuario que acceden a la plataforma para el mane
         And el cuerpo de la respuesta debe incluir el campo "message" con valor "Name XXX already exist" 
 ```
 
-#### Servicios que requieren autenticación
+#### Escenarios para el endpoint de gestión de usuarios (requiere autenticación)
 
 ```gherkin
 Feature: Gestionar los usuarios de la aplicación 
@@ -607,7 +607,11 @@ Feature: Gestionar los usuarios de la aplicación
         Given el servicio de gestión de habilidades "user-controller" sin autenticación válida 
         When se hace una petición POST al endpoint /user con información valida de un usuario no existente 
         Then el servicio responde un código HTTP 401 
+```
 
+#### Escenarios para el endpoint de gestión de habilidades(skills) (requiere autenticación)
+
+```
 Feature: Gestionar los habilidades para los usuarios 
 
     Scenario: verificar que no se puedan crear habilidades iguales 
