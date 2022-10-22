@@ -190,8 +190,8 @@ Se asume que la persona tiene conocimientos previos en:
 		
 		JSONObject request = new JSONObject();
 		
-		request.put("name", "Raghav");
-		request.put("job", "Teacher");
+		request.put("name", "Ernesto Perez");
+		request.put("job", "QA Automation");
 
 		RestAssured.baseURI =  "https://reqres.in/api";
 		
@@ -235,8 +235,8 @@ Se asume que la persona tiene conocimientos previos en:
 		
 		JSONObject request = new JSONObject();
 		
-		request.put("name", "Raghav");
-		request.put("job", "Teacher");
+		request.put("name", "Ernesto Perez");
+		request.put("job", "QA Automation");
 		
 		RestAssured.baseURI =  "https://reqres.in/api";
 		
@@ -258,8 +258,8 @@ Se asume que la persona tiene conocimientos previos en:
 		
 		JSONObject request = new JSONObject();
 		
-		request.put("name", "Raghav");
-		request.put("job", "Teacher");
+		request.put("name", "Ernesto Perez");
+		request.put("job", "QA Automation");
 		
 		RestAssured.baseURI =  "https://reqres.in";
 		
