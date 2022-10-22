@@ -510,8 +510,8 @@ Empecemos
 ### 6. Ejercicio final usando una API real
 
 Para este punto usaremos una API real que tiene algunos endpoints de acceso público y otros 
-que requieren autenticación, la documentación de cada endpoint se puede consultar en el siguiente enlace
-https://automation-practice.herokuapp.com/swagger-ui/
+que requieren autenticación, la documentación de cada endpoint se puede consultar en 
+[este enlace](https://automation-practice.herokuapp.com/swagger-ui/){:target="_blank"}
 
 #### Acceso a los endpoints que requieren autenticación.
 
