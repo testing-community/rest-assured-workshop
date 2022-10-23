@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
-public class TestsExample {
+public class ExampleTest {
 
     @Test
     public void test_one() {
@@ -17,12 +17,12 @@ public class TestsExample {
         long time = response.getTime();
         String responseBody = response.getBody().asString();
 
-        System.out.println(responseStatusCode);
-        System.out.println(time);
-        System.out.println(responseBody);
-        System.out.println(response.getHeader("content-type"));
+        System.out.println("Response status: " + responseStatusCode);
+        System.out.printf("Request time: %s ms%n", time);
+        System.out.println("Response body: "+responseBody);
+        System.out.println("Response header: "+response.getHeader("content-type"));
 
-        //Hamcrest
+        //Hamcrest assertion
         assertThat(responseStatusCode, equalTo(statusExpected));
     }
 }
