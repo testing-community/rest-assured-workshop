@@ -91,6 +91,9 @@ Se asume que la persona tiene conocimientos previos en:
     pom.xml.releaseBackup
     pom.xml.versionsBackup
     pom.xml.next
+    #Local Allure files
+    .allure/
+    allure-results/*
     ```
 
 1. Seguir las instrucciones para realizar el primer commit
