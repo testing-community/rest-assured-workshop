@@ -430,7 +430,7 @@ Empecemos
  
 	 Copie y pegue:
 	 ```java
-	 <aspectj.version>1.8.10</aspectj.version>
+	 <aspectj.version>1.9.7</aspectj.version>
 	 ```
 	    
  1. En el archivo `pom.xml` agrega los siguientes plugins que le permitiran generar el reporte. Recuerde que los plugins deben ir en la sección `<build><plugins>` del XML 
@@ -499,7 +499,7 @@ Empecemos
  		
     ```shell
        mvn clean test
-       mvnn allure:serve
+       mvn allure:serve
     ```
  	Esto le abrirá el reporte en el navegador, navegue el reporte y encuentre las anotaciones puestas en la clase de prueba.
  	
