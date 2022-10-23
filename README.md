@@ -93,7 +93,7 @@ Se asume que la persona tiene conocimientos previos en:
     pom.xml.next
     #Local Allure files
     .allure/
-    allure-results/*
+    allure-results/*.json
     ```
 
 1. Seguir las instrucciones para realizar el primer commit
@@ -316,7 +316,7 @@ La información de autenticacion del servicio es:
 
 Empecemos
 
-1. Cree una clase Java llamada `BaseClassAuth.java` en el paquete `com.restassured.test` y cree una peticion para autenticación con el siguiente código, la cual contiene los parámetros de la petición y autenticación:
+1. Cree una clase Java llamada `BaseClassAuth.java` en el paquete `com.restassured.test` y cree una petición para autenticación con el siguiente código, la cual contiene los parámetros de la petición y autenticación:
 
 	Copie y pegue:
     ```java
