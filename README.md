@@ -544,5 +544,5 @@ name: Java CI with Maven
             cache: maven
         - name: Build with Maven
         run: mvn -B package --file pom.xml
-	```
+```
 1. Configuremos nuestro poyecto para ejecutar los test mediante consola.
