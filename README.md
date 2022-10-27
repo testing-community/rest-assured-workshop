@@ -568,6 +568,8 @@ Copie y pegue:
         run: mvn test
 	 ```
 
-En este punto, ya tenemos configurado nuestro workflow de CI. Puedes subir los cambios, veras el workflow ejecutando.
+En este punto, ya tenemos configurado nuestro workflow de CI. Puedes subir los cambios, y crea un Pull Request. Si accedes a este, veras el workflow ejecutando.
+![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/CIRunning.png)
 
-Si el Build se ejecuta correctamente, crea un Pull Request y solicita aprobación. 
+Si el Build se ejecuta correctamente, solicita aprobación.
+![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/buildOK.png)
