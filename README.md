@@ -507,3 +507,12 @@ Empecemos
  	__Nota:__ Lea más acerca de Allure [aquí](https://docs.qameta.io/allure#_testng).
 
 ### 6. Configurar Integracion Continua (CI)
+
+    1. Para crear la configuracion del workflow de GitHub actions, vamos a crear un archivo maven.yml en el directorio .github/workflows que realice los siguientes steps cuando creamos o actualizamos un Pull Request:
+        * Configuracion de java
+        * Construye el proyecto con Maven
+
+    Para esto puedes usar la plantilla que genera gitHub Action
+        * Ingresa a tu repositorio git desde la web 
+        * Dirigere a la pestaña Actions
+    ![branch rules](https://raw.githubusercontent.com/testing-community/cypress-training-doc/main/media/branch_protection_configuration.png)
