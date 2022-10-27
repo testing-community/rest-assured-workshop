@@ -521,7 +521,7 @@ Para crear la configuracion del workflow de GitHub actions, vamos a crear un arc
 * Acciona Configurar
 * Puedes copiar el texo informado como obligatorio (el siguiente), y lo pegas en el archivo "maven.yml" creado:
 ```yaml
-	name: Java CI with Maven
+name: Java CI with Maven
 
     on:
     push:
