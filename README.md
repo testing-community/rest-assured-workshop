@@ -512,7 +512,7 @@ Para crear la configuracion del workflow de GitHub actions, vamos a crear un arc
 * Configuracion de java
 * Construye el proyecto con Maven
 
-1. Para esto puedes usar la plantilla que genera gitHub Action
+    1. Para esto puedes usar la plantilla que genera gitHub Action
     * Ingresa a tu repositorio git desde la web 
     * Dirigere a la pestaña Actions
 ![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/gitHubActiosOption.png)
@@ -545,4 +545,5 @@ name: Java CI with Maven
         - name: Build with Maven
         run: mvn -B package --file pom.xml
 ```
-1. Configuremos nuestro poyecto para ejecutar los test mediante consola.
+    
+2. Configuremos nuestro poyecto para ejecutar los test mediante consola.
