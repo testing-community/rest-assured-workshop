@@ -413,7 +413,7 @@ Empecemos
  Puede ver más Matchers [aquí]( https://www.javadoc.io/doc/org.hamcrest/hamcrest/2.1/org/hamcrest/Matchers.html).
  
  
-  ### 5. Configuremos nuestro reporte con Allure
+### 5. Configuremos nuestro reporte con Allure
   
  1. En el archivo `pom.xml` agregue la dependencia de Allure que se encuentra en el repositorio de maven.
  
@@ -505,3 +505,5 @@ Empecemos
  	Esto le abrirá el reporte en el navegador, navegue el reporte y encuentre las anotaciones puestas en la clase de prueba.
  	
  	__Nota:__ Lea más acerca de Allure [aquí](https://docs.qameta.io/allure#_testng).
+
+### 6. Configurar Integracion Continua (CI)
