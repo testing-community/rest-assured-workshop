@@ -512,7 +512,7 @@ Empecemos
     * Configuracion de java
     * Construye el proyecto con Maven
 
-Para esto puedes usar la plantilla que genera gitHub Action
+    Para esto puedes usar la plantilla que genera gitHub Action
     * Ingresa a tu repositorio git desde la web 
     * Dirigere a la pestaña Actions
-    ![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/gitHubActiosOption.png)
+![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/gitHubActiosOption.png)
