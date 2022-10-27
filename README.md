@@ -553,20 +553,20 @@ name: Java CI with Maven
 2. Configuremos nuestro proyecto para ejecutar los test mediante consola. Necesitamos [JCommander](https://mvnrepository.com/artifact/com.beust/jcommander). TestNG lo usa para analizar la línea de comando. En el archivo `pom.xml` agregue la dependencia:
 
 Copie y pegue:
-	 ```xml
-     <dependency>
-        <groupId>com.beust</groupId>
-        <artifactId>jcommander</artifactId>
-        <version>1.81</version>
-        <scope>test</scope>
+```xml
+    <dependency>
+       <groupId>com.beust</groupId>
+       <artifactId>jcommander</artifactId>
+       <version>1.81</version>
+       <scope>test</scope>
     </dependency>
-	 ```
+```
 3. Con esta dependencia, podrá ejecutar los tests del proyecto mediante consola con el comando `mvn test`. Agrega este comando al final del archivo `maven.yml` creado.
 Copie y pegue:
-	 ```xml
-      - name: run tests
-        run: mvn test
-	 ```
+```xml
+    - name: run tests
+      run: mvn test
+```
 
 En este punto, ya tenemos configurado nuestro workflow de CI. Puedes subir los cambios, y crea un Pull Request. Si accedes a este, veras el workflow ejecutando.
 ![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/CIRunning.png)
