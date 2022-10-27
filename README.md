@@ -506,20 +506,24 @@ Empecemos
  	
  	__Nota:__ Lea más acerca de Allure [aquí](https://docs.qameta.io/allure#_testng).
 
-### 6. Configurar Integracion Continua (CI)
+### 6. Configurar Integración Continua (CI)
 
-Para crear la configuracion del workflow de GitHub actions, vamos a crear un archivo maven.yml en el directorio .github/workflows que realice los siguientes steps cuando creamos o actualizamos un Pull Request:
-* Configuracion de java
+Para iniciar esta actividad, crea una nueva rama de tu proyecto.
+
+Para crear la configuración del workflow de GitHub actions, vamos a crear un archivo maven.yml en el directorio `.github/workflows` que realice los siguientes steps cuando creamos o actualizamos un Pull Request:
+* Configuración de java
 * Construye el proyecto con Maven
 
     1. Para esto puedes usar la plantilla que genera gitHub Action
     * Ingresa a tu repositorio git desde la web 
-    * Dirigere a la pestaña Actions
+    * Seleccione la pestaña Actions
 ![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/gitHubActiosOption.png)
     
 * Acciona New workflow
 * Acciona Configurar
-* Puedes copiar el texo informado como obligatorio (el siguiente), y lo pegas en el archivo "maven.yml" creado:
+* Selecciona la opción Maven Java Option, te presentara un nuevo archivo .yaml con una configuración estándar.
+![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/workFlowJavaMavenOption.png)
+* Puedes copiar el texto informado como obligatorio (el siguiente), y lo pegas en el archivo `maven.yml` creado:
 ```yaml
 name: Java CI with Maven
 
@@ -546,4 +550,24 @@ name: Java CI with Maven
         run: mvn -B package --file pom.xml
 ```
     
-2. Configuremos nuestro poyecto para ejecutar los test mediante consola.
+2. Configuremos nuestro proyecto para ejecutar los test mediante consola. Necesitamos [JCommander](https://mvnrepository.com/artifact/com.beust/jcommander). TestNG lo usa para analizar la línea de comando. En el archivo `pom.xml` agregue la dependencia:
+
+Copie y pegue:
+	 ```xml
+     <dependency>
+        <groupId>com.beust</groupId>
+        <artifactId>jcommander</artifactId>
+        <version>1.81</version>
+        <scope>test</scope>
+    </dependency>
+	 ```
+3. Con esta dependencia, podrá ejecutar los tests del proyecto mediante consola con el comando `mvn test`. Agrega este comando al final del archivo `maven.yml` creado.
+Copie y pegue:
+	 ```xml
+      - name: run tests
+        run: mvn test
+	 ```
+
+En este punto, ya tenemos configurado nuestro workflow de CI. Puedes subir los cambios, veras el workflow ejecutando.
+
+Si el Build se ejecuta correctamente, crea un Pull Request y solicita aprobación. 
