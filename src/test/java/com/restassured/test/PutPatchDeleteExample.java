@@ -15,8 +15,8 @@ public class PutPatchDeleteExample {
 		
 		JSONObject request = new JSONObject();
 		
-		request.put("name", "Raghav");
-		request.put("job", "Teacher");
+		request.put("name", "Ernesto Perez");
+		request.put("job", "QA Automation");
 		
 		RestAssured.baseURI =  "https://reqres.in/api";
 		
@@ -36,8 +36,8 @@ public class PutPatchDeleteExample {
 		
 		JSONObject request = new JSONObject();
 		
-		request.put("name", "Raghav");
-		request.put("job", "Teacher");
+		request.put("name", "Ernesto Perez");
+		request.put("job", "QA Automation");
 
 		RestAssured.baseURI =  "https://reqres.in";
 		
