@@ -654,51 +654,42 @@ Para crear la configuración del workflow de GitHub actions, vamos a crear un ar
     1. Para esto puedes usar la plantilla que genera gitHub Action
     * Ingresa a tu repositorio git desde la web 
     * Seleccione la pestaña Actions
-![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/gitHubActiosOption.png)
+![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/main/media/gitHubActiosOption.png)
     
 * Acciona New workflow
 * Acciona Configurar
 * Selecciona la opción Maven Java Option, te presentara un nuevo archivo .yaml con una configuración estándar.
-![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/workFlowJavaMavenOption.png)
+![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/main/media/workFlowJavaMavenOption.png)
 * Puedes copiar el texto informado como obligatorio (el siguiente), y lo pegas en el archivo `maven.yml` creado:
 ```yaml
 name: Java CI with Maven
 
-    on:
-    push:
-        branches: [ "main" ]
-    pull_request:
-        branches: [ "main" ]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
-    jobs:
-    build:
+jobs:
+  build:
 
-        runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-        steps:
-        - uses: actions/checkout@v3
-        - name: Set up JDK 11
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
-            java-version: '11'
-            distribution: 'temurin'
-            cache: maven
-        - name: Build with Maven
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
         run: mvn -B package --file pom.xml
+      - name: run tests
+        run: mvn test
 ```
-    
-2. Configuremos nuestro proyecto para ejecutar los test mediante consola. Necesitamos [JCommander](https://mvnrepository.com/artifact/com.beust/jcommander). TestNG lo usa para analizar la línea de comando. En el archivo `pom.xml` agregue la dependencia:
 
-Copie y pegue:
-```xml
-    <dependency>
-       <groupId>com.beust</groupId>
-       <artifactId>jcommander</artifactId>
-       <version>1.81</version>
-       <scope>test</scope>
-    </dependency>
-```
-3. Con esta dependencia, podrá ejecutar los tests del proyecto mediante consola con el comando `mvn test`. Agrega este comando al final del archivo `maven.yml` creado.
+2. Con esta configuración, podrá ejecutar los tests del proyecto mediante consola con el comando `mvn test`. Agrega este comando al final del archivo `maven.yml` creado.
 Copie y pegue:
 ```xml
     - name: run tests
@@ -706,7 +697,7 @@ Copie y pegue:
 ```
 
 En este punto, ya tenemos configurado nuestro workflow de CI. Puedes subir los cambios, y crea un Pull Request. Si accedes a este, veras el workflow ejecutando.
-![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/CIRunning.png)
+![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/main/media/CIRunning.png)
 
 Si el Build se ejecuta correctamente, solicita aprobación.
-![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/workflowCi/media/buildOK.png)
+![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/main/media/buildOK.png)
