@@ -506,7 +506,7 @@ Empecemos
  	
  	__Nota:__ Lea más acerca de Allure [aquí](https://docs.qameta.io/allure#_testng).
 
-### 6. Configurar Integración Continua (CI)
+### 7. Configurar Integración Continua (CI)
 
 Para iniciar esta actividad, crea una nueva rama de tu proyecto.
 
