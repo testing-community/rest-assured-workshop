@@ -27,6 +27,7 @@ Se asume que la persona tiene conocimientos previos en:
 1. [Aserciones con Hamcrest](#4-Aserciones-con-Hamcrest)
 1. [Configuremos nuestro reporte con Allure](#5-Configuremos-nuestro-reporte-con-Allure)
 1. [Ejercicio final usando una API real](#6-Ejercicio-final-usando-una-API-real)
+1. [Configurar Integración Continua (CI)](#7-Configurar-Integración-Continua-(CI))
 
 ### 1. Configuración Inicial del Proyecto
 
@@ -642,3 +643,62 @@ Feature: Gestionar los habilidades para los usuarios
         When se hace una petición POST al endpoint /skills con un nombre de habilidad NO existente 
         Then el servicio responde un código HTTP 401 
 ```
+
+### 7. Configurar Integración Continua (CI)
+
+Para iniciar esta actividad, crea una nueva rama de tu proyecto.
+
+Para crear la configuración del workflow de GitHub actions, vamos a crear un archivo `maven.yml` en el directorio `.github/workflows` que realice los siguientes steps cuando creamos o actualizamos un Pull Request:
+* Configuración de java
+* Construye el proyecto con Maven
+
+    1. Para esto puedes usar la plantilla que genera gitHub Actions
+    * Ingresa a tu repositorio git desde la web 
+    * Seleccione la pestaña Actions
+![branch rules](media/gitHubActiosOption.png)
+    
+* Acciona New workflow
+* Acciona Configurar
+* Selecciona la opción Maven Java Option, te presentara un nuevo archivo .yaml con una configuración estándar.
+![branch rules](media/workFlowJavaMavenOption.png)
+* Puedes copiar el texto informado como obligatorio (el siguiente), y lo pegas en el archivo `maven.yml` creado:
+```yaml
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: run tests
+        run: mvn test
+```
+
+2. Con esta configuración, podrá ejecutar los tests del proyecto mediante consola con el comando `mvn test`. Agrega este comando al final del archivo `maven.yml` creado.
+Copie y pegue:
+```xml
+    - name: run tests
+      run: mvn test
+```
+
+En este punto, ya tenemos configurado nuestro workflow de CI. Puedes subir los cambios, y crea un Pull Request. Si accedes a este, veras el workflow ejecutando.
+![branch rules](media/CIRunning.png)
+
+Si el Build se ejecuta correctamente, solicita aprobación.
+![branch rules](media/buildOK.png)
