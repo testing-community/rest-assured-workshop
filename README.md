@@ -655,7 +655,7 @@ Para crear la configuración del workflow de GitHub actions, vamos a crear un ar
     1. Para esto puedes usar la plantilla que genera gitHub Actions
     * Ingresa a tu repositorio git desde la web 
     * Seleccione la pestaña Actions
-![branch rules](main/media/gitHubActiosOption.png)
+![branch rules](media/gitHubActiosOption.png)
     
 * Acciona New workflow
 * Acciona Configurar
