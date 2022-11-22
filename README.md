@@ -27,6 +27,7 @@ Se asume que la persona tiene conocimientos previos en:
 1. [Aserciones con Hamcrest](#4-Aserciones-con-Hamcrest)
 1. [Configuremos nuestro reporte con Allure](#5-Configuremos-nuestro-reporte-con-Allure)
 1. [Ejercicio final usando una API real](#6-Ejercicio-final-usando-una-API-real)
+1. [Configurar Integración Continua (CI)](#7-Configurar-Integración-Continua-(CI))
 
 ### 1. Configuración Inicial del Proyecto
 
@@ -647,19 +648,19 @@ Feature: Gestionar los habilidades para los usuarios
 
 Para iniciar esta actividad, crea una nueva rama de tu proyecto.
 
-Para crear la configuración del workflow de GitHub actions, vamos a crear un archivo maven.yml en el directorio `.github/workflows` que realice los siguientes steps cuando creamos o actualizamos un Pull Request:
+Para crear la configuración del workflow de GitHub actions, vamos a crear un archivo `maven.yml` en el directorio `.github/workflows` que realice los siguientes steps cuando creamos o actualizamos un Pull Request:
 * Configuración de java
 * Construye el proyecto con Maven
 
-    1. Para esto puedes usar la plantilla que genera gitHub Action
+    1. Para esto puedes usar la plantilla que genera gitHub Actions
     * Ingresa a tu repositorio git desde la web 
     * Seleccione la pestaña Actions
-![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/main/media/gitHubActiosOption.png)
+![branch rules](main/media/gitHubActiosOption.png)
     
 * Acciona New workflow
 * Acciona Configurar
 * Selecciona la opción Maven Java Option, te presentara un nuevo archivo .yaml con una configuración estándar.
-![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/main/media/workFlowJavaMavenOption.png)
+![branch rules](media/workFlowJavaMavenOption.png)
 * Puedes copiar el texto informado como obligatorio (el siguiente), y lo pegas en el archivo `maven.yml` creado:
 ```yaml
 name: Java CI with Maven
@@ -697,7 +698,7 @@ Copie y pegue:
 ```
 
 En este punto, ya tenemos configurado nuestro workflow de CI. Puedes subir los cambios, y crea un Pull Request. Si accedes a este, veras el workflow ejecutando.
-![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/main/media/CIRunning.png)
+![branch rules](media/CIRunning.png)
 
 Si el Build se ejecuta correctamente, solicita aprobación.
-![branch rules](https://github.com/testing-community/rest-assured-workshop/blob/main/media/buildOK.png)
+![branch rules](media/buildOK.png)
