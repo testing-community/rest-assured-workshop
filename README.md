@@ -527,20 +527,20 @@ Estas son las principales opciones que brinda la API
 3. Ingresar comentarios para los estudiantes.
 
 ### Acceso a la API
-Para poder hacer invocaciones a la API es necesario incluir los siguientes headers
-en todas las peticiones HTTP, por favor solicite los valores válidos a los encargados del ramp-up.
+Para poder hacer invocaciones a la API es necesario incluir los siguientes encabezados
+en todas las peticiones HTTP, por favor solicita los valores válidos a los encargados del ramp-up.
 
 ```
 X-Parse-Application-Id: <application_id> 
 X-Parse-REST-API-Key: <api_key>
 ```
 **Nota:** Estos datos no se deben "quemar" en el código fuente del ejercicio que vayas a entregar, puesto que es información sensible que no debe ser subida a los repositorios, 
-se recomienda hacer uso de archivos `.properties`, variables de entorno o mecanismos similares
+se recomienda hacer uso de archivos `.properties`, `.json`, variables de entorno o mecanismos similares
 
 
 #### Acceso a los endpoints que no requieren autenticación.
 
-Algunos de los endpoints de la API no requieren autenticación para ser invocados, por ejemplo el endpoint de habilidades ("Skills") se puede invocar de la siguiente manera
+Algunos de los endpoints de la API no requieren autenticación para ser invocados, por ejemplo el endpoint de habilidades ("Skills") se puede invocar de la siguiente manera:
 
 ```shell
 curl -X 'GET' \
@@ -549,8 +549,8 @@ curl -X 'GET' \
   -H 'X-Parse-Application-Id: <application_id>' \
   -H 'X-Parse-REST-API-Key: <api_key>'
 ```
-
-Respuesta de ejemplo
+Nota que en el encabezado únicamente se deben especificar los datos del _application id_ y el _REST API key_ pero no es necesario indicar ningún tipo de tóken asociado a un usuario en particular.
+_Respuesta de ejemplo_
 ```json
 {
   "results": [
@@ -571,22 +571,22 @@ Respuesta de ejemplo
 #### Acceso a los endpoints que requieren autenticación.
 
 Para poder acceder a los endpoints que requieren autenticación,
-es necesario obtener un tóken y enviarlo como encabezado en cada
-petición, a continuación se listan los pasos necesario para obtener dicho tóken.
+es necesario obtener un **tóken de sesión** y enviarlo en el encabezado en cada
+petición junto con los ya mencionados **application id** y **REST API token**, a continuación se listan los pasos necesario para obtener dicho tóken.
 
 1. #### Crear una cuenta ( endpoint `/signup` )
     **Notas:**  
    * Los datos ingresados acá no tienen que corresponder a un correo
    real, pero los debes recordar porque serán requeridos para obtener el tóken de autenticación
-   * Dado que la creación de la cuenta se debe hacer una única vez y no debe estar incluída en el código fuente del ejercicio a entregar, se recomienda usar una herramienta como postman
+   * Dado que la creación de la cuenta se debe hacer una única vez y no debe estar incluída en el código fuente del ejercicio a entregar, se recomienda usar una herramienta como postman para este paso.
     ```shell
     # No olvides especificar los datos de la nueva cuenta
     curl -X POST \
-    -H "X-Parse-Application-Id: <APPLICATION_ID>" \
-    -H "X-Parse-REST-API-Key: <API_KEY>" \
-    -H "Content-Type: application/json" \
-    -d "{ \"password\":\"<CONTRASEÑA>\", \"username\": \"<NOMBRE_USUARIO>\",\"email\": \"<CORREO_ELECTRONICO>\" }" \
-    https://parseapi.back4app.com/users
+        -H "X-Parse-Application-Id: <APPLICATION_ID>" \
+        -H "X-Parse-REST-API-Key: <API_KEY>" \
+        -H "Content-Type: application/json" \
+        -d "{ \"password\":\"<CONTRASEÑA>\", \"username\": \"<NOMBRE_USUARIO>\",\"email\": \"<CORREO_ELECTRONICO>\" }" \
+        https://parseapi.back4app.com/users
     ```
     _Respuesta ejemplo:_
     ```json
@@ -639,7 +639,7 @@ petición, a continuación se listan los pasos necesario para obtener dicho tók
     
     `X-Parse-Session-Token: <SESSION_TOKEN>`
  
-    A continuación un ejemplo de como invocar el endpoint de estudiantes (Students) que requiere el token.
+    A continuación un ejemplo de como invocar el endpoint de estudiantes (Students) que requiere el tóken.
     
    ```shell
     curl --location --request GET 'https://parseapi.back4app.com/classes/Students' \
