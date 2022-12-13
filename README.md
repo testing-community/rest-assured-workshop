@@ -512,19 +512,22 @@ Empecemos
 ### 6. Ejercicio final usando una API real
 
 Para este punto usaremos una API real que simula el funcionamiento de una aplicación académica donde se puede hacer gestión de estudiantes
-y sus habilidades, así como darles retroalimentación por medio de comentarios. La documentación de los endpoints disponibles se puede consultar en 
+y sus habilidades, así como darles retroalimentación por medio de comentarios.
+
+#### Documentación de la API 📚
+La documentación de la API, así como ejemplos de las peticiones están disponibles en 
 [este enlace](https://documenter.getpostman.com/view/8538830/2s8YzUyMcb)
 
 #### Diagrama de Entidades
 
 ![branch rules](media/api_diagram.png)
 
-Estas son las principales opciones que brinda la API
+Estas son las principales funcionalidades que brinda la API
 
 1. Crear una cuenta / autenticarse.
 2. Añadir y gestionar estudiantes.
-2. Asociar habilidades a los estudiantes.
-3. Ingresar comentarios para los estudiantes.
+3. Asociar habilidades a los estudiantes.
+4. Ingresar comentarios para los estudiantes.
 
 ### Acceso a la API
 Para poder hacer invocaciones a la API es necesario incluir los siguientes encabezados
@@ -535,7 +538,7 @@ X-Parse-Application-Id: <application_id>
 X-Parse-REST-API-Key: <api_key>
 ```
 **Nota:** Estos datos no se deben "quemar" en el código fuente del ejercicio que vayas a entregar, puesto que es información sensible que no debe ser subida a los repositorios, 
-se recomienda hacer uso de archivos `.properties`, `.json`, variables de entorno o mecanismos similares
+se recomienda variables de entorno, parámetros de java u otro mecanismo similar.
 
 
 #### Acceso a los endpoints que no requieren autenticación.
@@ -579,7 +582,7 @@ Para poder acceder a los endpoints que requieren autenticación,
 es necesario obtener un **tóken de sesión** y enviarlo en el encabezado en cada
 petición junto con los ya mencionados **application id** y **REST API token**, a continuación se listan los pasos necesario para obtener dicho tóken.
 
-1. #### Crear una cuenta ( endpoint `/users` )
+1. #### Crear una cuenta ( endpoint _POST_ `/users` )
 
 **Notas:**  
    * Los datos ingresados acá no tienen que corresponder a un correo
