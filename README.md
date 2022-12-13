@@ -212,7 +212,7 @@ Se asume que la persona tiene conocimientos previos en:
     ```
     Primero preparamos la request que enviaremos como un JSON, para esto usamos la clase JSONObject y después imprimimos como se vería ese JSON que creamos.
     Luego especificamos la url base (baseURI) a la cual le enviaremos el request.
-    Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los header necesarios y el body a enviar, luego la acción que sería la url base y adicionamos el resto del endpoint para el método post, con el then verificamos el status code de la petición e imprimimos lo que nos retornó el endpoint.
+    Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los encabezados necesarios y el cuerpo a enviar, luego la acción que sería la url base y adicionamos el resto del endpoint para el método POST, con el "then" verificamos el código de estado de la petición e imprimimos lo que nos retornó el endpoint.
     La parte importante aquí es la acción (when) para especificar el método HTTP.
 
     __Nota:__ Si quisieramos imprimir (por debuguear rápidamente por ejemplo) como esta el request formado, podemos usar `System.out.println(request.toJSONString());`
@@ -281,7 +281,7 @@ Se asume que la persona tiene conocimientos previos en:
     ```
     Primero preparamos la request que enviaremos como un JSON, para esto usamos la clase JSONObject y después imprimimos como se veria ese json que creamos.
     Luego especificamos la url base (baseURI) a la cual le enviaremos el request.
-    Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los header necesarios y el body a enviar, luego la acción que se sería la url base y adicionamos el resto del endpoint para el método (put o patch), con el then verificamos el status code de la petición e imprimimos lo que nos retorno el endpoint.
+    Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los encabezados necesarios y el body a enviar, luego la acción que se sería la url base y adicionamos el resto del endpoint para el método (put o patch), con el then verificamos el status code de la petición e imprimimos lo que nos retorno el endpoint.
     La parte importante aquí es la acción (when) para especificar el método HTTP.
 1. Vamos a crear la petición para el DELETE
 
@@ -550,6 +550,7 @@ curl -X 'GET' \
   -H 'X-Parse-REST-API-Key: <api_key>'
 ```
 Nota que en el encabezado únicamente se deben especificar los datos del _application id_ y el _REST API key_ pero no es necesario indicar ningún tipo de tóken asociado a un usuario en particular.
+
 _Respuesta de ejemplo_
 ```json
 {
@@ -570,32 +571,39 @@ _Respuesta de ejemplo_
 
 #### Acceso a los endpoints que requieren autenticación.
 
+Con el fin de aislar los datos de prueba entre las personas que hacen el ramp-up, la API permite
+la creación de una cuenta de usuario para así filtrar la información y mostrarle a cada usuario únicamente
+aquellos registros creados por el mismo.
+
 Para poder acceder a los endpoints que requieren autenticación,
 es necesario obtener un **tóken de sesión** y enviarlo en el encabezado en cada
 petición junto con los ya mencionados **application id** y **REST API token**, a continuación se listan los pasos necesario para obtener dicho tóken.
 
 1. #### Crear una cuenta ( endpoint `/signup` )
-    **Notas:**  
+
+**Notas:**  
    * Los datos ingresados acá no tienen que corresponder a un correo
    real, pero los debes recordar porque serán requeridos para obtener el tóken de autenticación
    * Dado que la creación de la cuenta se debe hacer una única vez y no debe estar incluída en el código fuente del ejercicio a entregar, se recomienda usar una herramienta como postman para este paso.
-    ```shell
-    # No olvides especificar los datos de la nueva cuenta
-    curl -X POST \
-        -H "X-Parse-Application-Id: <APPLICATION_ID>" \
-        -H "X-Parse-REST-API-Key: <API_KEY>" \
-        -H "Content-Type: application/json" \
-        -d "{ \"password\":\"<CONTRASEÑA>\", \"username\": \"<NOMBRE_USUARIO>\",\"email\": \"<CORREO_ELECTRONICO>\" }" \
-        https://parseapi.back4app.com/users
-    ```
-    _Respuesta ejemplo:_
-    ```json
-    {
-        "objectId": "<user_id>",
-        "createdAt": "2022-12-12T20:06:15.953Z",
-        "sessionToken": "<session_token>"
-    }
-    ```
+    
+   ```shell
+   # No olvides especificar los datos de la nueva cuenta
+   curl -X POST \
+      -H "X-Parse-Application-Id: <APPLICATION_ID>" \
+      -H "X-Parse-REST-API-Key: <API_KEY>" \
+      -H "Content-Type: application/json" \
+      -d "{ \"password\":\"<CONTRASEÑA>\", \"username\": \"<NOMBRE_USUARIO>\",\"email\": \"<CORREO_ELECTRONICO>\" }" \
+      https://parseapi.back4app.com/users
+   ```
+   _Respuesta ejemplo:_
+
+   ```json
+  {
+      "objectId": "<user_id>",
+      "createdAt": "2022-12-12T20:06:15.953Z",
+      "sessionToken": "<session_token>"
+   }
+   ```
 
 2. #### Autenticarse en la API (Endpoint `/login` )
     **Nota:** 
@@ -635,14 +643,14 @@ petición junto con los ya mencionados **application id** y **REST API token**, 
    }
    ```
    
-    El valor retornado en el campo `sessionToken` se debe enviar en el header de las peticiones que requieran autenticación de la siguiente forma:
+   El valor retornado en el campo `sessionToken` se debe enviar en el encabezado de las peticiones que requieran autenticación de la siguiente forma:
     
-    `X-Parse-Session-Token: <SESSION_TOKEN>`
+   `X-Parse-Session-Token: <SESSION_TOKEN>`
  
-    A continuación un ejemplo de como invocar el endpoint de estudiantes (Students) que requiere el tóken.
+   A continuación un ejemplo de como invocar el endpoint de estudiantes (Students) que requiere el **tóken de sesión**.
     
    ```shell
-    curl --location --request GET 'https://parseapi.back4app.com/classes/Students' \
+   curl --location --request GET 'https://parseapi.back4app.com/classes/Students' \
       --header 'X-Parse-Application-Id: <APPLICATION_ID>' \
       --header 'X-Parse-REST-API-Key: <API_KEY>' \
       --header 'X-Parse-Session-Token: <SESSION_TOKEN>'
@@ -651,7 +659,7 @@ petición junto con los ya mencionados **application id** y **REST API token**, 
 ### Ejercicio a desarrollar
 
 A continuación se listan varios escenario de prueba para la API mencionada usando sintaxis *gherkin*, 
-para cada uno de los "features" debes crear una clase Test e implementar 
+para cada uno de los "features" debes crear una clase _Test_ e implementar 
 un método por cada uno de los escenarios que haga las validaciones enunciadas haciendo uso de RestAssured
 y los conceptos vistos durante el workshop
 
@@ -683,9 +691,8 @@ Feature: Gestionar las habilidades disponibles en el sistema
         And NO se especifican los encabezados "X-Parse-REST-API-Key" y "X-Parse-Application-Id" 
         When se hace una petición GET al endpoint /classes/Skills 
         Then el servicio responde un código HTTP 401 
-        And el cuerpo de la respuesta se debe mostrar un mensaje diciendo que el usuario no está autorizado para realizar esta acción 
+        And el cuerpo de la respuesta debe mostrar un mensaje diciendo que el usuario no está autorizado para realizar esta acción 
 ```
-
 
 #### Escenarios para el endpoint de gestión de estudiantes (requiere autenticación)
 
@@ -706,7 +713,7 @@ Feature: Gestionar los estudiantes de la aplicación
         Then el servicio responde un código HTTP 400 
         And el cuerpo de la respuesta debe mostrar un mensaje diciendo que hay duplicidad de información
         
-    Scenario: verificar que no se puedan crear estudiantes sin nombre 
+    Scenario: verificar que no se pueden ingresar caracteres especiales en el nombre 
         Given el servicio de gestión de estudiantes "Students" con autenticación válida 
         When se hace una petición POST al endpoint /classes/Students enviando caracteres especiales en el campo "name" 
         Then el servicio responde un código HTTP 400 
@@ -762,7 +769,7 @@ Feature: Gestionar los habilidades de los estudiantes
 ```gherkin
 Feature: Gestionar los comentarios a los estudiantes 
  
-    Scenario: Verificar que se puedan agregar comentarios a los estudiantes habilidades 
+    Scenario: Verificar que se puedan agregar comentarios a los estudiantes 
         Given el servicio de gestión de comentarios "Comments" con autenticación válida 
         When hace una petición POST al endpoint /classes/Comments con información de un estudiante existente 
         Then el servicio responde con código HTTP 201
@@ -787,9 +794,11 @@ Feature: Gestionar los comentarios a los estudiantes
 
 ### 7. Configurar Integración Continua (CI)
 
+Antes de empezar con esta actividad asegurate de que los scripts estén corriendo correctamente en tu máquina local.
+
 Para iniciar esta actividad, crea una nueva rama de tu proyecto.
 
-Para crear la configuración del workflow de GitHub actions, vamos a crear un archivo `maven.yml` en el directorio `.github/workflows` que realice los siguientes steps cuando creamos o actualizamos un Pull Request:
+Para crear la configuración del workflow de GitHub actions, vamos a crear un archivo `maven.yml` en el directorio `.github/workflows` que realice los siguientes pasos cuando creamos o actualizamos un Pull Request:
 * Configuración de java
 * Construye el proyecto con Maven
 
