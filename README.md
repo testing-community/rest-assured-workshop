@@ -512,8 +512,8 @@ Empecemos
 ### 6. Ejercicio final usando una API real
 
 Para este punto usaremos una API real que simula el funcionamiento de una aplicación académica donde se puede hacer gestión de estudiantes
-y sus habilidades, así como darles retroalimentación por medio de comentarios. La documentación de los endpoints disponibles se puede consultar en el siguiente enlace 
-[este enlace](https://dashboard.back4app.com/swagger/33VkH3xL6TfxON93Sduy9mPmK1grwO2f98dT3Ami/)
+y sus habilidades, así como darles retroalimentación por medio de comentarios. La documentación de los endpoints disponibles se puede consultar en 
+[este enlace](https://documenter.getpostman.com/view/8538830/2s8YzUyMcb)
 
 #### Diagrama de Entidades
 
@@ -579,7 +579,7 @@ Para poder acceder a los endpoints que requieren autenticación,
 es necesario obtener un **tóken de sesión** y enviarlo en el encabezado en cada
 petición junto con los ya mencionados **application id** y **REST API token**, a continuación se listan los pasos necesario para obtener dicho tóken.
 
-1. #### Crear una cuenta ( endpoint `/signup` )
+1. #### Crear una cuenta ( endpoint `/users` )
 
 **Notas:**  
    * Los datos ingresados acá no tienen que corresponder a un correo
