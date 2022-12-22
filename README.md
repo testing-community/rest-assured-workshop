@@ -212,7 +212,7 @@ Se asume que la persona tiene conocimientos previos en:
     ```
     Primero preparamos la request que enviaremos como un JSON, para esto usamos la clase JSONObject y después imprimimos como se vería ese JSON que creamos.
     Luego especificamos la url base (baseURI) a la cual le enviaremos el request.
-    Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los header necesarios y el body a enviar, luego la acción que sería la url base y adicionamos el resto del endpoint para el método post, con el then verificamos el status code de la petición e imprimimos lo que nos retornó el endpoint.
+    Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los encabezados necesarios y el cuerpo a enviar, luego la acción que sería la url base y adicionamos el resto del endpoint para el método POST, con el "then" verificamos el código de estado de la petición e imprimimos lo que nos retornó el endpoint.
     La parte importante aquí es la acción (when) para especificar el método HTTP.
 
     __Nota:__ Si quisieramos imprimir (por debuguear rápidamente por ejemplo) como esta el request formado, podemos usar `System.out.println(request.toJSONString());`
@@ -281,7 +281,7 @@ Se asume que la persona tiene conocimientos previos en:
     ```
     Primero preparamos la request que enviaremos como un JSON, para esto usamos la clase JSONObject y después imprimimos como se veria ese json que creamos.
     Luego especificamos la url base (baseURI) a la cual le enviaremos el request.
-    Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los header necesarios y el body a enviar, luego la acción que se sería la url base y adicionamos el resto del endpoint para el método (put o patch), con el then verificamos el status code de la petición e imprimimos lo que nos retorno el endpoint.
+    Finalmente en formato gherkin preparamos, enviamos y validamos el request. Aquí ponemos los encabezados necesarios y el body a enviar, luego la acción que se sería la url base y adicionamos el resto del endpoint para el método (put o patch), con el then verificamos el status code de la petición e imprimimos lo que nos retorno el endpoint.
     La parte importante aquí es la acción (when) para especificar el método HTTP.
 1. Vamos a crear la petición para el DELETE
 
@@ -511,144 +511,297 @@ Empecemos
 
 ### 6. Ejercicio final usando una API real
 
-Para este punto usaremos una API real que tiene algunos endpoints de acceso público y otros 
-que requieren autenticación, la documentación de cada endpoint se puede consultar en 
-[este enlace](https://automation-practice.herokuapp.com/swagger-ui/)
+Para este punto usaremos una API real que simula el funcionamiento de una aplicación académica donde se puede hacer gestión de estudiantes
+y sus habilidades, así como darles retroalimentación por medio de comentarios.
+
+#### Documentación de la API 📚
+La documentación de la API, así como ejemplos de las peticiones están disponibles en 
+[este enlace](https://documenter.getpostman.com/view/8538830/2s8YzUyMcb)
+
+#### Diagrama de Entidades
+
+![branch rules](media/api_diagram.png)
+
+Estas son las principales funcionalidades que brinda la API
+
+1. Crear una cuenta / autenticarse.
+2. Añadir y gestionar estudiantes.
+3. Asociar habilidades a los estudiantes.
+4. Ingresar comentarios para los estudiantes.
+
+### Acceso a la API
+Para poder hacer invocaciones a la API es necesario incluir los siguientes encabezados
+en todas las peticiones HTTP, por favor solicita los valores válidos a los encargados del ramp-up.
+
+```
+X-Parse-Application-Id: <application_id> 
+X-Parse-REST-API-Key: <api_key>
+```
+**Nota:** Estos datos no se deben "quemar" en el código fuente del ejercicio que vayas a entregar, puesto que es información sensible que no debe ser subida a los repositorios, 
+se recomienda variables de entorno, parámetros de java u otro mecanismo similar.
+
+
+#### Acceso a los endpoints que no requieren autenticación.
+
+Algunos de los endpoints de la API no requieren autenticación para ser invocados, por ejemplo el endpoint de habilidades ("Skills") se puede invocar de la siguiente manera:
+
+```shell
+curl -X 'GET' \
+  'https://parseapi.back4app.com/classes/Skills' \
+  -H 'accept: application/json' \
+  -H 'X-Parse-Application-Id: <application_id>' \
+  -H 'X-Parse-REST-API-Key: <api_key>'
+```
+Nota que en el encabezado únicamente se deben especificar los datos del _application id_ y el _REST API key_ pero no es necesario indicar ningún tipo de tóken asociado a un usuario en particular.
+
+_Respuesta de ejemplo_
+```json
+{
+  "results": [
+    {
+      "name": "Functional testing",
+      "description": "Is a type of software testing that validates the software system against the functional requirements/specifications",
+      "objectId": "ODp5lTet6R"
+    },
+    {
+      "name": "Cypress",
+      "description": "Automation framework used to automate UI and component testing",
+      "objectId": "Z3NyhPqOQT"
+    }
+  ]
+}
+```
 
 #### Acceso a los endpoints que requieren autenticación.
 
-Para acceder a los endpoints que requieren autenticación, 
-es necesario primero obtener un token válido, 
-dicho token se obtiene haciendo una petición tipo *POST* al endpoint `/login`
-enviando credenciales válidas en el payload
-```json
-{ 
-"password": "admin", 
-"username": "admin" 
-} 
-```
-Si las credenciales son válidas, el servicio va a retornar un JSON como el siguiente.
+Con el fin de aislar los datos de prueba entre las personas que hacen el ramp-up, la API permite
+la creación de una cuenta de usuario para así filtrar la información y mostrarle a cada usuario únicamente
+aquellos registros creados por el mismo.
 
-```json
-{
-    "token": "<token>",
-    "type": "Bearer",
-    "id": "<id>",
-    "username": "username",
-    "email": "username@domain.com",
-    "roles": [
-        "mod",
-        "user",
-        "admin"
-    ]
-} 
-```
+Para poder acceder a los endpoints que requieren autenticación,
+es necesario obtener un **tóken de sesión** y enviarlo en el encabezado en cada
+petición junto con los ya mencionados **application id** y **REST API token**, a continuación se listan los pasos necesario para obtener dicho tóken.
 
-El valor retornado en el campo token se debe enviar en el header de las peticiones que requieran autenticación de la siguiente forma:
+1. #### Crear una cuenta ( endpoint _POST_ `/users` )
 
-`Authorization: Bearer <token>`
+**Notas:**  
+   * Los datos ingresados acá no tienen que corresponder a un correo
+   real, pero los debes recordar porque serán requeridos para obtener el tóken de autenticación
+   * Dado que la creación de la cuenta se debe hacer una única vez y no debe estar incluída en el código fuente del ejercicio a entregar, se recomienda usar una herramienta como postman para este paso.
+    
+   ```shell
+   # No olvides especificar los datos de la nueva cuenta
+   curl -X POST \
+      -H "X-Parse-Application-Id: <APPLICATION_ID>" \
+      -H "X-Parse-REST-API-Key: <API_KEY>" \
+      -H "Content-Type: application/json" \
+      -d "{ \"password\":\"<CONTRASEÑA>\", \"username\": \"<NOMBRE_USUARIO>\",\"email\": \"<CORREO_ELECTRONICO>\" }" \
+      https://parseapi.back4app.com/users
+   ```
+   _Respuesta ejemplo:_
 
-#### Ejercicio a desarrollar
+   ```json
+  {
+      "objectId": "<user_id>",
+      "createdAt": "2022-12-12T20:06:15.953Z",
+      "sessionToken": "<session_token>"
+   }
+   ```
+
+2. #### Autenticarse en la API (Endpoint `/login` )
+    **Nota:** 
+   * La lógica para invocar este endpoint debe ser incluída en el código fuente del ejercicio a entregar, puesto que el tóken debe ser obtenido cada vez que se vayan a ejecutar los scripts. 
+   
+   Una vez creada la cuenta, puedes usar las credenciales definidas para autenticarte de la siguiente manera:
+
+    ```shell
+   # Presta atención a los parametros NOMBRE_DE_USUARIO Y CONTRASEÑA
+    curl -X GET \
+       -H "X-Parse-Application-Id: <application_id>" \
+       -H "X-Parse-REST-API-Key: <api_key>" \
+       -H "X-Parse-Revocable-Session: 1" \
+       -G \
+       --data-urlencode 'username=<NOMBRE_DE_USUARIO>' \
+       --data-urlencode 'password=<CONTRASEÑA>' \
+       https://parseapi.back4app.com/login
+   ```
+   _Respuesta de ejemplo_
+   ```json
+   {
+    "objectId": "WoHkPt0sxP",
+    "username": "academy_student5",
+    "email": "academy_student5@mailinator.com",
+    "createdAt": "2022-12-12T20:06:15.953Z",
+    "updatedAt": "2022-12-12T20:06:15.953Z",
+    "ACL": {
+        "*": {
+            "read": true
+        },
+        "WoHkPt0sxP": {
+            "read": true,
+            "write": true
+        }
+    },
+    "sessionToken": "r:1bd01746f758eaf2f1c43e2e452f25bf"
+   }
+   ```
+   
+   El valor retornado en el campo `sessionToken` se debe enviar en el encabezado de las peticiones que requieran autenticación de la siguiente forma:
+    
+   `X-Parse-Session-Token: <SESSION_TOKEN>`
+ 
+   A continuación un ejemplo de como invocar el endpoint de estudiantes (Students) que requiere el **tóken de sesión**.
+    
+   ```shell
+   curl --location --request GET 'https://parseapi.back4app.com/classes/Students' \
+      --header 'X-Parse-Application-Id: <APPLICATION_ID>' \
+      --header 'X-Parse-REST-API-Key: <API_KEY>' \
+      --header 'X-Parse-Session-Token: <SESSION_TOKEN>'
+   ```
+
+### Ejercicio a desarrollar
 
 A continuación se listan varios escenario de prueba para la API mencionada usando sintaxis *gherkin*, 
-para cada uno de los "features" cree una clase Test e implemente 
-un método por cada uno de los escenarios que haga las validaciones enunciadas haciendo uso de rest assured
+para cada uno de los "features" debes crear una clase _Test_ e implementar 
+un método por cada uno de los escenarios que haga las validaciones enunciadas haciendo uso de RestAssured
 y los conceptos vistos durante el workshop
 
-#### Escenarios para el endpoint de roles (no requiere autenticación)
+#### Escenarios para el endpoint de habilidades (no requiere autenticación)
 
 ```gherkin
-Feature: Gestionar los roles de usuario que acceden a la plataforma para el manejo de habilidades
+Feature: Gestionar las habilidades disponibles en el sistema
  
-    Scenario: Listar todos los roles disponibles en el sistema 
-        Given el servicio de gestión de los roles "role-test-controller"  
-        When se hace una petición GET al endpoint /api/test/roles  
+    Scenario: Listar todas las habilidades disponibles en el sistema 
+        Given el servicio de gestión de habilidades "Skills"  
+        When se hace una petición GET al endpoint /classes/Skills  
         Then el servicio responde un código 200 
-        And en el cuerpo de la respuesta se presenta una lista con los roles disponibles en el sistema 
+        And en el cuerpo de la respuesta la longitud de la propiedad "results" es mayor a 0 
     
-    Scenario: Consultar un rol por código 
-        Given el servicio de gestión de los roles "role-test-controller"  
-        When se hace una petición GET al endpoint /api/test/roles /{id} especificando el id de un rol existente 
+    Scenario: Consultar una habilidad por código 
+        Given el servicio de gestión de habilidades "Skills"  
+        When se hace una petición GET al endpoint /classes/Skills/{skillId} especificando el id de una habilidad existente 
         Then el servicio responde un código 200 
-        And en el cuerpo de la respuesta se presenta la información del rol que debe incluir el campo "id" y "name" 
-     
-    Scenario: Validar la creación de un rol de usuario 
-        Given el servicio de gestión de los roles "role-testController"  
-        When se hace una petición POST al endpoint /api/test/roles con el nombre de un rol que no existente 
-        Then el servicio responde un código 201 
-        And en el cuerpo de la respuesta se presenta el nombre del rol creado y el id asignado 
-        When se consultan los roles de usuario haciendo una petición GET al endpoint /api/test/roles 
-        Then el servicio presenta el rol creado anteriormente en la lista de resultados en el cuerpo de la respuesta. 
+        And en el cuerpo de la respuesta se presenta la información de la habilidad que debe incluir los campos "name", "description" y "objectId"  
     
-    Scenario: Verificar que no se puedan crear roles iguales 
-        Given el servicio de gestión de los roles "role-testController"  
-        When se hace una petición POST al endpoint /api/test/roles con un valor de name de un rol ya existente 
+    Scenario: Verificar que no se permite eliminar habilidades 
+        Given el servicio de gestión de habilidades "Skills"  
+        When se hace una petición DELETE al endpoint /classes/Skills/{skillId} especificando el id de una habilidad existente 
         Then el servicio retorna un error HTTP 400 
-        And el cuerpo de la respuesta debe incluir el campo "message" con valor "Name XXX already exist" 
+        And el cuerpo de la respuesta debe incluir el campo "error" con un mensaje diciendo que el usuario no está autorizado para realizar esta acción
+        
+    Scenario: Verificar que para poder consultar las habilidades se deben especificar los encabezados válidos 
+        Given el servicio de gestión estudiantes "Skills"
+        And NO se especifican los encabezados "X-Parse-REST-API-Key" y "X-Parse-Application-Id" 
+        When se hace una petición GET al endpoint /classes/Skills 
+        Then el servicio responde un código HTTP 401 
+        And el cuerpo de la respuesta debe incluir el campo "error" con un mensaje diciendo "unauthorized" 
 ```
 
-
-#### Escenarios para el endpoint de gestión de usuarios (requiere autenticación)
+#### Escenarios para el endpoint de gestión de estudiantes (requiere autenticación)
 
 ```gherkin
-Feature: Gestionar los usuarios de la aplicación 
+Feature: Gestionar los estudiantes de la aplicación 
 
-    Scenario: verificar que se pueda crear un usuario y este quede disponible para consultar 
-        Given el servicio de gestión de los usuarios "user-controller" con autenticación válida 
-        When se hace una petición POST al endpoint /user con información valida de un usuario no existente 
+    Scenario: verificar que se pueda crear un estudiante y este quede disponible para consultar 
+        Given el servicio de gestión de estudiantes "Students" con autenticación válida 
+        When se hace una petición POST al endpoint /classes/Students con información valida de un estudiante no existente 
         Then el servicio responde con código 201 
-        And el cuerpo de la respuesta presenta el nombre del usuario creado, el id asignado y el email 
-        When se consultan los usuarios haciendo una petición GET al endpoint /users 
-        Then La respuesta del servicio presenta una lista de usuario existentes que debe incluir el usuario recién creado 
+        And el cuerpo de la respuesta debe incluir el campo "objectId" y "createdAt" 
+        When se consultan los usuarios haciendo una petición GET al endpoint /classes/Students
+        Then La respuesta del servicio presenta una lista de estudiantes existentes que debe incluir el estudiante recién creado
+        
+     Scenario: verificar que no se puedan crear estudiantes con el mismo nombre y apellido 
+        Given el servicio de gestión de estudiantes "Students" con autenticación válida 
+        When se hace una petición POST al endpoint /classes/Students con información valida de un estudiante existente 
+        Then el servicio responde un código HTTP 400 
+        And el cuerpo de la respuesta debe mostrar un mensaje diciendo que hay duplicidad de información
+        
+    Scenario: verificar que no se pueden ingresar caracteres especiales en el nombre 
+        Given el servicio de gestión de estudiantes "Students" con autenticación válida 
+        When se hace una petición POST al endpoint /classes/Students enviando caracteres especiales en el campo "name" 
+        Then el servicio responde un código HTTP 400 
+        And el cuerpo de la respuesta debe mostrar un mensaje diciendo que se encontraron caracteres inválidos en el campo "name"   
     
-    Scenario: verificar que los usuarios puedan ser actualizados 
-        Given el servicio de gestión de los usuarios "user-controller" con autenticación válida 
-        When cuando se hace una petición PUT al endpoint /users para un usuario existente (enviando el nombre de usuario como variable de "path") 
-        And información nueva para el usuario en los parámetros username y email enviados en el payload del request 
-        Then el servicio responde con código HTTP 200 
-    
-    Scenario: Verificar que para poder crear nuevos usuarios se deba estar autenticado en el sistema 
-        Given el servicio de gestión de habilidades "user-controller" sin autenticación válida 
-        When se hace una petición POST al endpoint /user con información valida de un usuario no existente 
-        Then el servicio responde un código HTTP 401 
+    Scenario: verificar que los estudiantes puedan ser actualizados 
+        Given el servicio de gestión de estudiantes "Students" con autenticación válida 
+        When se hace una petición PUT al endpoint /classes/Students/{studentId} para un estudiante existente 
+        And se envía una nueva lista de intereses en el parámetro "interests" en el payload del request 
+        Then el servicio responde con código HTTP 200
+        And el cuerpo de la respuesta debe incluir el campo "updatedAt" 
+        
+    Scenario: Verificar que para poder crear nuevos estudiantes se deba estar autenticado en el sistema 
+        Given el servicio de gestión estudiantes "Students" 
+        And se especifican los encabezados "X-Parse-REST-API-Key" y "X-Parse-Application-Id" con valores válidos
+        And NO se especifica el encabezado "X-Parse-Session-Token"
+        When se hace una petición POST al endpoint /classes/Students con información valida de un estudiante no existente
+        Then el servicio responde un código HTTP 404 
+        And el cuerpo de la respuesta se debe mostrar un mensaje diciendo que el usuario debe estar autenticado
 ```
 
 
-#### Escenarios para el endpoint de gestión de habilidades(skills) (requiere autenticación)
+#### Escenarios para el endpoint de gestión de habilidades de un estudiante (StudentSkills) (requiere autenticación)
 
 ```gherkin
-Feature: Gestionar los habilidades para los usuarios 
+Feature: Gestionar los habilidades de los estudiantes 
 
-    Scenario: verificar que no se puedan crear habilidades iguales 
-        Given el servicio de gestión de habilidades "skill-controller" con autenticación válida 
-        When se hace una petición POST al endpoint /skills con un nombre de habilidad ya existente 
-        Then el servicio responde un código HTTP 400 
-        And en el cuerpo de la respuesta debe estar el campo "message" con valor "Name XXXX already exist". 
-    
-    Scenario: Verificar la creación de skills 
-        Given el servicio de gestión de habilidades "skill-controller" con autenticación válida 
-        When se hace una petición POST al endpoint /skills con un nombre de habilidad NO existente 
+    Scenario: Verificar la adición de una habilidad a un estudiante 
+        Given el servicio de gestión de habilidades "StudentsSkills" con autenticación válida 
+        When se hace una petición POST al endpoint /classes/StudentSkills especificando información de un estudiante y una habilidad existente 
         Then el servicio responde un código HTTP 201 
-        And en el cuerpo de la respuesta debe tener  el parámetro "name" con el nombre del habilidad recién creado y un Id. 
+        And el cuerpo de la respuesta debe tener los campos "objectId" y "createdAt"
+        When cuando se hace una petición GET al endpoint /classes/Students/{studentId} para el mismo estudiante
+        Then el cuerpo de la respuesta debe incluir el campo "skillNames"
+        
+    Scenario: Verificar la adición de una habilidad repetida a un estudiante 
+        Given el servicio de gestión de habilidades "StudentsSkills" con autenticación válida 
+        When se hace una petición POST al endpoint /classes/StudentSkills especificando información de un estudiante y una habilidad ya asociada al estudiante 
+        Then el servicio responde un código HTTP 400 
+        And el cuerpo de la respuesta debe incluir un mensaje de error diciendo que hay unformación duplicada
     
-    Scenario: Verificar que se puedan borrar habilidades 
-        Given el servicio de gestión de habilidades "skill-controller" con autenticación válida 
-        When cuando hace una petición DELETE al endpoint /skills con un ID existente, 
-        Then el servicio responde con código HTTP 204 
-        When se consultan los habilidades haciendo una petición GET al endpoint /skills 
-        Then la respuesta del servicio presenta una lista de los habilidades existentes que NO debe incluir la habilidad recién eliminada 
-    
-    Scenario: Verificar que para poder crear nuevas habilidades se deba estar autenticado en el sistema 
-        Given el servicio de gestión de habilidades "skill-controller" sin autenticación válida 
-        When se hace una petición POST al endpoint /skills con un nombre de habilidad NO existente 
-        Then el servicio responde un código HTTP 401 
+    Scenario: Verificar que para poder asociar nuevas habilidades se deba estar autenticado en el sistema 
+        Given el servicio de gestión de habilidades de un estudiante "StudentsSkills" 
+        And se especifican los encabezados "X-Parse-REST-API-Key" y "X-Parse-Application-Id" con valores válidos
+        And NO se especifica el encabezado "X-Parse-Session-Token" 
+        When se hace una petición POST al endpoint /classes/StudentSkills especificando información de un estudiante y una habilidad existente
+        Then el servicio responde un código HTTP 404 
+        And el cuerpo de la respuesta se debe mostrar un mensaje diciendo que el usuario debe estar autenticado
+```
+
+#### Escenarios para el endpoint de gestión de comentarios de un estudiante (Comments) (requiere autenticación)
+
+```gherkin
+Feature: Gestionar los comentarios a los estudiantes 
+ 
+    Scenario: Verificar que se puedan agregar comentarios a los estudiantes 
+        Given el servicio de gestión de comentarios "Comments" con autenticación válida 
+        When hace una petición POST al endpoint /classes/Comments con información de un estudiante existente 
+        Then el servicio responde con código HTTP 201
+        And el cuerpo de la respuesta debe tener los campos "objectId", "comment" y "createdAt"
+        When se consultan todos los comentarios haciendo una petición GET al endpoint /classes/Comments
+        Then la respuesta del servicio presenta una lista de comentarios que debe incluir el comentario recién añadido
+        
+    Scenario: Verificar que se puedan borrar comentarios 
+        Given el servicio de gestión de comentarios "Comments" con autenticación válida 
+        When hace una petición DELETE al endpoint /classes/Comments/{commentId} con un ID de comentario existente 
+        Then el servicio responde con código HTTP 200
+        When se consultan los comentarios haciendo una petición GET al endpoint /classes/Comments
+        Then la respuesta del servicio presenta una lista de los comentarios existentes que NO debe incluir el comentario recién eliminado
+        
+    Scenario: Verificar que los comentarios queden asociados al estudiante 
+        Given el servicio de gestión de comentarios "Comments" con autenticación válida 
+        When se hace una petición POST al endpoint /classes/Comments con información de un estudiante existente 
+        Then el servicio responde con código HTTP 201
+        When se hace una petición GET al endpoint /classes/Students/{studentId} para el mismo estudiante
+        Then el cuerpo de la respuesta debe incluir el campo "comments" que debe incluir el comentario recién añadido   
 ```
 
 ### 7. Configurar Integración Continua (CI)
 
+Antes de empezar con esta actividad asegurate de que los scripts estén corriendo correctamente en tu máquina local.
+
 Para iniciar esta actividad, crea una nueva rama de tu proyecto.
 
-Para crear la configuración del workflow de GitHub actions, vamos a crear un archivo `maven.yml` en el directorio `.github/workflows` que realice los siguientes steps cuando creamos o actualizamos un Pull Request:
+Para crear la configuración del workflow de GitHub actions, vamos a crear un archivo `maven.yml` en el directorio `.github/workflows` que realice los siguientes pasos cuando creamos o actualizamos un Pull Request:
 * Configuración de java
 * Construye el proyecto con Maven
 
